@@ -1,7 +1,7 @@
 " TODO
 " git status highlighting (modified red, added green)
 " folding
-command! Vimrc :vs $MYVIMRC
+command! Vimrc :vs $HOME/.dotfiles/nvim/.config/nvim/init.vim
 
 nnoremap <space> <nop>
 let mapleader = "\<space>"
