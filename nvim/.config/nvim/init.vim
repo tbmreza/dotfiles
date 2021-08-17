@@ -7,8 +7,7 @@ nnoremap <space> <nop>
 let mapleader = "\<space>"
 noremap <tab> gt
 noremap <s-tab> gT
-" nmap <c-Y> <s-tab>
-nmap <c-Y> gT
+nmap <c-Y> <s-tab>
 noremap <leader>f :Autoformat<CR>
 tnoremap <f4> <c-\><c-n>
 nnoremap Y y$
