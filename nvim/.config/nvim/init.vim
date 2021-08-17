@@ -7,20 +7,34 @@ nnoremap <space> <nop>
 let mapleader = "\<space>"
 noremap <tab> gt
 noremap <s-tab> gT
+" nmap <c-Y> <s-tab>
+nmap <c-Y> gT
 noremap <leader>f :Autoformat<CR>
 tnoremap <f4> <c-\><c-n>
 nnoremap Y y$
 nnoremap <leader>s :w<cr>
 nmap <leader>m yygclp
 vmap <leader>m ygvgcP
+nnoremap <leader>q :sp<cr>:SQHExecuteFile<cr>
 nnoremap <leader>g :Git<space>
+nnoremap <leader>c :Cargo<space>
 nnoremap <leader>; <s-a>;<esc>
 nnoremap <silent> <esc><esc> :nohlsearch<cr>
 nnoremap <silent> <c-p> :Files<cr>
 nnoremap <silent> <c-f> :Rg<cr>
+" Horizontal scrolling
+set sidescroll=1
+set sidescrolloff=10
+noremap <silent><C-ScrollWheelDown> 10zl
+noremap <silent><C-2-ScrollWheelDown> 10zl
+noremap <silent><C-3-ScrollWheelDown> 10zl
+noremap <silent><C-4-ScrollWheelDown> 10zl
+noremap <silent><C-ScrollWheelUp> 10zh
+noremap <silent><C-2-ScrollWheelUp> 10zh
+noremap <silent><C-3-ScrollWheelUp> 10zh
+noremap <silent><C-4-ScrollWheelUp> 10zh
 
 set updatetime=200
-set colorcolumn=80,120
 set cursorline
 set nowrap
 set nu rnu
@@ -71,8 +85,22 @@ let g:python3_host_prog="/usr/local/bin/python3"
 let g:formatter_yapf_style = 'yapf'
 " blamer
 let g:blamer_enabled = 1
+let g:blamer_show_in_visual_modes = 0
+let g:blamer_show_in_insert_modes = 0
 " rainbow
 let g:rainbow_active = 0
+" SQHell
+let g:sqh_provider = 'sqlite'
+let g:sqh_connections = {
+      \ 'course': {
+        \   'database': '/Users/reza.handzalah/work/cmu-db-course/homework_sql/musicbrainz-cmudb2020.db'
+        \},
+        \ 'default': {
+          \   'database': '/Users/reza.handzalah/work/cmu-db-course/homework_sql/musicbrainz-cmudb2020.db'
+          \}
+          \}
+" JavaScript
+let g:vim_jsx_pretty_highlight_close_tag = 0
 
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Theme
@@ -88,6 +116,11 @@ Plug 'vim-autoformat/vim-autoformat'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'shawncplus/phpcomplete.vim'
+Plug 'joereynolds/SQHell.vim'
+Plug 'yuezk/vim-js'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'sheerun/vim-polyglot'
 " Text Editor
 Plug 'simeji/winresizer'
 Plug 'tpope/vim-sensible'
@@ -98,5 +131,7 @@ Plug 'tpope/vim-commentary'
 Plug 'Yggdroot/indentLine'
 Plug 'luochen1990/rainbow'
 Plug 'airblade/vim-gitgutter'
+Plug 'preservim/tagbar'
+Plug 'gioele/vim-autoswap'
 call plug#end()
 
