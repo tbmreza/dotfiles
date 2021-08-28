@@ -1,14 +1,14 @@
-" TODO
-" git status highlighting (modified red, added green)
-" folding
 command! Vimrc :vs $HOME/.dotfiles/nvim/.config/nvim/init.vim
 
 nnoremap <space> <nop>
 let mapleader = "\<space>"
+" Cycle through tabs {{
 noremap <tab> gt
 noremap <s-tab> gT
-nmap <c-Y> <s-tab>
-noremap <leader>f :Autoformat<CR>
+nnoremap <c-d> <c-y>
+nmap <c-y> <s-tab>
+" }}
+noremap <leader>f :Neoformat<cr>
 tnoremap <f4> <c-\><c-n>
 nnoremap Y y$
 nnoremap <leader>s :w<cr>
@@ -21,7 +21,8 @@ nnoremap <leader>; <s-a>;<esc>
 nnoremap <silent> <esc><esc> :nohlsearch<cr>
 nnoremap <silent> <c-p> :Files<cr>
 nnoremap <silent> <c-f> :Rg<cr>
-" Horizontal scrolling
+nnoremap <silent> <c-b> :NERDTreeToggle<cr>
+" Horizontal scrolling {{
 set sidescroll=1
 set sidescrolloff=10
 noremap <silent><C-ScrollWheelDown> 10zl
@@ -32,6 +33,7 @@ noremap <silent><C-ScrollWheelUp> 10zh
 noremap <silent><C-2-ScrollWheelUp> 10zh
 noremap <silent><C-3-ScrollWheelUp> 10zh
 noremap <silent><C-4-ScrollWheelUp> 10zh
+" }}
 
 set updatetime=200
 set cursorline
@@ -41,7 +43,9 @@ set mouse=nicr
 set clipboard+=unnamedplus
 set ignorecase
 set smartcase
-
+if (has("termguicolors"))
+  set termguicolors
+endif
 " Associate file extensions
 au BufRead,BufNewFile *.volt setfiletype html
 
@@ -56,15 +60,27 @@ endfunction
 
 autocmd vimenter * call AirlineInit()
 let g:airline_theme='google_dark'
+" let g:airline_theme='spring_night'
 let g:gruvbox_contrast_dark = 'soft'
+" let ayucolor="mirage"
+" let ayucolor="dark"
+
+" LIGHT MODE
+set termguicolors
+set background=light
+let g:airline_theme='cobalt2'
+let g:gruvbox_contrast_light = 'soft'
+
 autocmd vimenter * ++nested colorscheme gruvbox
+" autocmd vimenter * ++nested colorscheme ayu
+" autocmd vimenter * ++nested colorscheme spring-night
+" autocmd vimenter * ++nested colorscheme nord
 
-" " LIGHT MODE
-" set termguicolors
-" set background=light
-" let g:airline_theme='cobalt2'
-" let g:gruvbox_contrast_light = 'hard'
+" autocmd WinEnter,FileType python,javascript colorscheme desert256
+" autocmd WinEnter,FileType *,html,css        colorscheme jellybeans  " This includes default filetype colorscheme.
 
+" NERDTree
+let g:NERDTreeWinPos = "right"
 " indentLine
 let g:indentLine_char = '·'
 " winresizer
@@ -79,9 +95,6 @@ nmap gy <Plug>(coc-type-definition)
 nmap gi <Plug>(coc-implementation)
 nmap gr <Plug>(coc-references)
 nmap <f2> <Plug>(coc-rename)
-" vim-autoformat
-let g:python3_host_prog="/usr/local/bin/python3"
-let g:formatter_yapf_style = 'yapf'
 " blamer
 let g:blamer_enabled = 1
 let g:blamer_show_in_visual_modes = 0
@@ -98,39 +111,49 @@ let g:sqh_connections = {
           \   'database': '/Users/reza.handzalah/work/cmu-db-course/homework_sql/musicbrainz-cmudb2020.db'
           \}
           \}
-" JavaScript
-let g:vim_jsx_pretty_highlight_close_tag = 0
+
+let g:formatterpath = ['/Users/reza.handzalah/.nvm/versions/node/v14.16.0/bin']
+" syntastic
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+" coqtail
+filetype plugin on
+" neoformat
+let g:neoformat_basic_format_align = 1
+let g:neoformat_basic_format_retab = 1
+let g:neoformat_basic_format_trim = 1
 
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Theme
+Plug 'arcticicestudio/nord-vim'
+Plug 'ayu-theme/ayu-vim'
+Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'morhetz/gruvbox'
+Plug 'rhysd/vim-color-spring-night'
 " IDE
-Plug 'tpope/vim-fugitive'
 Plug 'APZelos/blamer.nvim'
-Plug 'rust-lang/rust.vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'vim-autoformat/vim-autoformat'
+Plug 'joereynolds/SQHell.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'shawncplus/phpcomplete.vim'
-Plug 'joereynolds/SQHell.vim'
-Plug 'yuezk/vim-js'
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'maxmellon/vim-jsx-pretty'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'preservim/nerdtree'
+Plug 'rust-lang/rust.vim'
+Plug 'sbdchd/neoformat'
 Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-fugitive'
+Plug 'whonore/Coqtail'
 " Text Editor
-Plug 'simeji/winresizer'
-Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
 Plug 'Yggdroot/indentLine'
-Plug 'luochen1990/rainbow'
 Plug 'airblade/vim-gitgutter'
-Plug 'preservim/tagbar'
 Plug 'gioele/vim-autoswap'
+Plug 'luochen1990/rainbow'
+Plug 'preservim/tagbar'
+Plug 'simeji/winresizer'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'wesQ3/vim-windowswap'
 call plug#end()
 
