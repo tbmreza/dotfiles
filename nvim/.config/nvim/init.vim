@@ -21,7 +21,7 @@ nnoremap <leader>; <s-a>;<esc>
 nnoremap <silent> <esc><esc> :nohlsearch<cr>
 " }}
 " IDE {{
-nnoremap <leader>q :sp<cr>:SQHExecuteFile<cr>
+nnoremap <leader>x :sp<cr>:SQHExecuteFile<cr>
 nnoremap <leader>b :NERDTreeMirror<cr>
 nnoremap <silent> <c-p> :Files<cr>
 nnoremap <silent> <c-f> :Rg<cr>
@@ -48,6 +48,9 @@ noremap <silent><C-2-ScrollWheelUp>   10zh
 noremap <silent><C-3-ScrollWheelUp>   10zh
 noremap <silent><C-4-ScrollWheelUp>   10zh
 " }}
+" Copy buffer file path {{
+noremap <f1> :let @+ = expand("%")<cr>
+" {{
 " Exit terminal mode {{
 tnoremap <f4> <c-\><c-n>
 " {{
@@ -89,9 +92,9 @@ autocmd vimenter * ++nested colorscheme gruvbox
 
 " Filetype by filetype {{
 filetype plugin on
-au BufRead,BufNewFile *.volt setfiletype html
+autocmd BufRead,BufNewFile *.volt setfiletype html
 
-function! Fallback()
+function! OtherFiletypes()
   nmap <leader>f :Autoformat<cr>
   vmap <leader>f :Autoformat<cr>
 endfunction
@@ -101,9 +104,10 @@ function! FiletypePrettier()
   vmap <leader>f <Plug>(coc-format-selected)
 endfunction
 
-autocmd filetype * call Fallback()
-autocmd filetype javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
-autocmd filetype coq call LightMode()
+" autocmd filetype * call OtherFiletypes()
+autocmd BufRead,BufNewFile * call OtherFiletypes()
+autocmd BufRead,BufNewFile javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
+autocmd BufRead,BufNewFile coq call LightMode()
 " }}
 
 " Plugin configs {{
@@ -113,6 +117,9 @@ let g:NERDTreeWinPos = "right"
 let g:indentLine_char = '·'
 " winresizer
 let g:winresizer_start_key = '<leader>e'
+" Coqtail
+let g:coqtail_noimap = 1
+let g:coqtail_map_prefix = '<leader>q'
 " rust.vim
 syntax enable
 filetype plugin indent on
@@ -147,6 +154,9 @@ let g:sqh_connections = {
           \ 'database': '/Users/reza.handzalah/work/cmu-db-course/homework_sql/musicbrainz-cmudb2020.db'
           \ }
           \ }
+" mundo
+set undofile
+set undodir=~/.vim/undo
 " }}
 
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
@@ -180,6 +190,7 @@ Plug 'gioele/vim-autoswap'
 Plug 'luochen1990/rainbow'
 Plug 'preservim/tagbar'
 Plug 'simeji/winresizer'
+Plug 'simnalamburt/vim-mundo'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
