@@ -1,5 +1,7 @@
+" lightline https://github.com/itchyny/lightline.vim/issues/532
 command! Vimrc :vs $HOME/.dotfiles/nvim/.config/nvim/init.vim
 
+set hidden
 set updatetime=200
 set cursorline
 set nowrap
@@ -13,8 +15,8 @@ nnoremap <space> <nop>
 let mapleader = "\<space>"
 " }}
 " Day to day text editing {{
-nmap <leader>m yygclp
-vmap <leader>m ygvgcP
+nmap mm yygclp
+vmap m ygvgcP
 nnoremap Y y$
 nnoremap <leader>s :w<cr>
 nnoremap <leader>; <s-a>;<esc>
@@ -62,32 +64,95 @@ set termguicolors
 
 function! DarkMode()
   set background=dark
-  let g:airline_theme='google_dark'
+  " let g:airline_theme='google_dark'
   let g:gruvbox_contrast_dark = 'soft'
 endfunction
 command! DarkMode call DarkMode()
 
 function! LightMode()
   set background=light
-  let g:airline_theme='cobalt2'
+  " let g:airline_theme='cobalt2'
   let g:gruvbox_contrast_light = 'soft'
 endfunction
 command! LightMode call LightMode()
 
-function! AirlineInit()
-  call DarkMode()
-  call airline#parts#define('modified', {
-        \ 'raw': '%m',
-        \ 'accent': 'red',
-        \ })
-  let g:airline_section_c = airline#section#create(['%<', '%f', 'modified', ' ', 'readonly'])
-endfunction
+" function! AirlineInit()
+"   call DarkMode()
+"   call airline#parts#define('modified', {
+"         \ 'raw': '%m',
+"         \ 'accent': 'red',
+"         \ })
+"   let g:airline_section_c = airline#section#create(['%<', '%f', 'modified', ' ', 'readonly'])
+" endfunction
 
-autocmd vimenter * call AirlineInit()
+" autocmd vimenter * call AirlineInit()
 autocmd vimenter * ++nested colorscheme gruvbox
 " autocmd vimenter * ++nested colorscheme ayu
 " autocmd vimenter * ++nested colorscheme spring-night
 " autocmd vimenter * ++nested colorscheme nord
+" }}
+
+" lightline {{
+let g:lightline = {
+      \ 'colorscheme': 'powerlineish',
+      \ 'my': {}
+      \ }
+
+function! g:lightline.my.filename() abort
+  return expand('%:p:h:t').'/'.expand('%:t')
+endfunction
+
+let g:lightline.active = {
+      \ 'left': [['mode', 'paste'], ['gitbranch'], ['readonly', 'absolutepath', 'modified']],
+      \ 'right': [['lineinfo'], ['percent'], ['filetype']]
+      \ }
+let g:lightline.tabline = {
+      \ 'right': [['cocstatus']]
+      \ }
+" let g:lightline.tab = {
+"       \ 'active': ['tabnum', 'filename', 'modified'],
+"       \ 'inactive': ['tabnum', 'filename', 'modified']
+"       \ }
+let g:lightline.mode_map = {
+      \ 'n': 'NOR',
+      \ 'i': 'INS',
+      \ 'R': 'REP',
+      \ 'v': 'VIS',
+      \ 'V': 'V-L',
+      \ "C-v>": 'V-B',
+      \ 'c': 'COM',
+      \ 's': 'SEL',
+      \ 'S': 'S-L',
+      \ "C-s>": 'S-B',
+      \ 't': 'TER',
+      \ }
+let g:lightline.component_function = {
+      \ 'gitbranch': 'FugitiveHead',
+      \ }
+let g:lightline.tab_component_function = {
+      \ 'filename': 'g:lightline.my.filename',
+      \ }
+
+function! g:lightline#onetab(n, active) abort
+  let _ = []
+  for name in a:active ? s:lightline.tab.active : s:lightline.tab.inactive
+    if name == 'filename'
+      call add(_, expand('%:p:h:t').'/'.expand('%:t'))
+    elseif has_key(s:lightline.tab_component_function, name)
+      call add(_, call(s:lightline.tab_component_function[name], [a:n]))
+    else
+      call add(_, get(s:lightline.tab_component, name, ''))
+    endif
+  endfor
+  return join(filter(_, 'v:val !=# ""'), ' ')
+endfunction
+
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+
+set showtabline=2
+set noshowmode
+
+" call lightline#coc#register()
 " }}
 
 " Filetype by filetype {{
@@ -98,6 +163,9 @@ function! OtherFiletypes()
   nmap <leader>f :Autoformat<cr>
   vmap <leader>f :Autoformat<cr>
 endfunction
+
+nmap <leader>f :Prettier<cr>
+vmap <leader>f <Plug>(coc-format-selected)
 
 function! FiletypePrettier()
   nmap <leader>f :Prettier<cr>
@@ -163,14 +231,17 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Theme
 Plug 'arcticicestudio/nord-vim'
 Plug 'ayu-theme/ayu-vim'
+Plug 'itchyny/lightline.vim'
+Plug 'itchyny/vim-gitbranch'
 Plug 'morhetz/gruvbox'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 Plug 'rhysd/vim-color-spring-night'
 " IDE
 Plug 'APZelos/blamer.nvim'
 Plug 'amadeus/vim-jsx'
 Plug 'joereynolds/SQHell.vim'
+Plug 'josa42/vim-lightline-coc'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'maxmellon/vim-jsx-pretty'
