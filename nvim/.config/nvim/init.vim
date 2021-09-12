@@ -1,4 +1,3 @@
-" lightline https://github.com/itchyny/lightline.vim/issues/532
 command! Vimrc :vs $HOME/.dotfiles/nvim/.config/nvim/init.vim
 
 set hidden
@@ -76,16 +75,6 @@ function! LightMode()
 endfunction
 command! LightMode call LightMode()
 
-" function! AirlineInit()
-"   call DarkMode()
-"   call airline#parts#define('modified', {
-"         \ 'raw': '%m',
-"         \ 'accent': 'red',
-"         \ })
-"   let g:airline_section_c = airline#section#create(['%<', '%f', 'modified', ' ', 'readonly'])
-" endfunction
-
-" autocmd vimenter * call AirlineInit()
 autocmd vimenter * ++nested colorscheme gruvbox
 " autocmd vimenter * ++nested colorscheme ayu
 " autocmd vimenter * ++nested colorscheme spring-night
@@ -93,15 +82,13 @@ autocmd vimenter * ++nested colorscheme gruvbox
 " }}
 
 " lightline {{
+set showtabline=2
+set noshowmode
+
 let g:lightline = {
       \ 'colorscheme': 'powerlineish',
       \ 'my': {}
       \ }
-
-function! g:lightline.my.filename() abort
-  return expand('%:p:h:t').'/'.expand('%:t')
-endfunction
-
 let g:lightline.active = {
       \ 'left': [['mode', 'paste'], ['gitbranch'], ['readonly', 'absolutepath', 'modified']],
       \ 'right': [['lineinfo'], ['percent'], ['filetype']]
@@ -109,10 +96,6 @@ let g:lightline.active = {
 let g:lightline.tabline = {
       \ 'right': [['cocstatus']]
       \ }
-" let g:lightline.tab = {
-"       \ 'active': ['tabnum', 'filename', 'modified'],
-"       \ 'inactive': ['tabnum', 'filename', 'modified']
-"       \ }
 let g:lightline.mode_map = {
       \ 'n': 'NOR',
       \ 'i': 'INS',
@@ -128,31 +111,10 @@ let g:lightline.mode_map = {
       \ }
 let g:lightline.component_function = {
       \ 'gitbranch': 'FugitiveHead',
+      \ 'cocstatus': 'coc#status',
       \ }
-let g:lightline.tab_component_function = {
-      \ 'filename': 'g:lightline.my.filename',
-      \ }
-
-function! g:lightline#onetab(n, active) abort
-  let _ = []
-  for name in a:active ? s:lightline.tab.active : s:lightline.tab.inactive
-    if name == 'filename'
-      call add(_, expand('%:p:h:t').'/'.expand('%:t'))
-    elseif has_key(s:lightline.tab_component_function, name)
-      call add(_, call(s:lightline.tab_component_function[name], [a:n]))
-    else
-      call add(_, get(s:lightline.tab_component, name, ''))
-    endif
-  endfor
-  return join(filter(_, 'v:val !=# ""'), ' ')
-endfunction
 
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
-
-set showtabline=2
-set noshowmode
-
-" call lightline#coc#register()
 " }}
 
 " Filetype by filetype {{
@@ -231,12 +193,10 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Theme
 Plug 'arcticicestudio/nord-vim'
 Plug 'ayu-theme/ayu-vim'
-Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'morhetz/gruvbox'
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
 Plug 'rhysd/vim-color-spring-night'
+Plug 'tbmreza/lightline.vim'
 " IDE
 Plug 'APZelos/blamer.nvim'
 Plug 'amadeus/vim-jsx'
@@ -268,4 +228,3 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'wesQ3/vim-windowswap'
 call plug#end()
-
