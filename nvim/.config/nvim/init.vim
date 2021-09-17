@@ -163,8 +163,6 @@ autocmd BufRead,BufNewFile coq call LightMode()
 let g:NERDTreeWinPos = "right"
 " indentLine
 let g:indentLine_char = '·'
-" winresizer
-" let g:winresizer_start_key = '<leader>e'
 " Coqtail
 let g:coqtail_noimap = 1
 let g:coqtail_map_prefix = '<leader>q'
@@ -206,17 +204,6 @@ let g:sqh_connections = {
 set undofile
 set undodir=~/.vim/undo
 " }}
-" sandwich {{
-let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
-let g:sandwich#recipes += [
-      \   {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
-      \   {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
-      \   {'buns': ['( ', ' )'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
-      \   {'buns': ['{\s*', '\s*}'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['{']},
-      \   {'buns': ['\[\s*', '\s*\]'], 'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['[']},
-      \   {'buns': ['(\s*', '\s*)'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['(']},
-      \ ]
-" }}
 
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Theme
@@ -248,7 +235,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
 Plug 'gioele/vim-autoswap'
 Plug 'luochen1990/rainbow'
-Plug 'machakann/vim-sandwich'
+Plug 'tbmreza/vim-sandwich'
 Plug 'preservim/tagbar'
 Plug 'simnalamburt/vim-mundo'
 Plug 'tpope/vim-commentary'
