@@ -8,10 +8,25 @@ set nu rnu
 set mouse=nicr
 set clipboard+=unnamedplus
 set ignorecase smartcase
+set formatoptions=jcql
 
 " SPACE is leader {{
 nnoremap <space> <nop>
 let mapleader = "\<space>"
+" }}
+" Window {{
+nmap ç <c-w>c
+nnoremap ˇ <c-w><s-t>
+nnoremap — <c-w>_
+nmap ≠ <c-w>=
+nmap ˙ <c-w>h
+nmap ∆ <c-w>j
+nmap ˚ <c-w>k
+nmap ¬ <c-w>l
+nmap ¯ 4<c-w><
+nmap ˘ 4<c-w>>
+nmap ± 4<c-w>+
+nmap – 4<c-w>-
 " }}
 " Day to day text editing {{
 nmap mm yygclp
@@ -36,6 +51,8 @@ noremap <tab> gt
 noremap <s-tab> gT
 nnoremap <c-d> <c-y>
 nmap <c-y> <s-tab>
+nmap [b :bprev<cr>
+nmap ]b :bnext<cr>
 " }}
 " Horizontal scrolling (ugly but here we are) {{
 set sidescroll=1
@@ -122,7 +139,8 @@ filetype plugin on
 autocmd BufRead,BufNewFile *.volt setfiletype html
 
 function! OtherFiletypes()
-  nmap <leader>f :Autoformat<cr>
+  " nmap <leader>f :Autoformat<cr>
+  nmap <leader>f :Prettier<cr>
   vmap <leader>f :Autoformat<cr>
 endfunction
 
@@ -146,7 +164,7 @@ let g:NERDTreeWinPos = "right"
 " indentLine
 let g:indentLine_char = '·'
 " winresizer
-let g:winresizer_start_key = '<leader>e'
+" let g:winresizer_start_key = '<leader>e'
 " Coqtail
 let g:coqtail_noimap = 1
 let g:coqtail_map_prefix = '<leader>q'
@@ -184,9 +202,20 @@ let g:sqh_connections = {
           \ 'database': '/Users/reza.handzalah/work/cmu-db-course/homework_sql/musicbrainz-cmudb2020.db'
           \ }
           \ }
-" mundo
+" mundo {{
 set undofile
 set undodir=~/.vim/undo
+" }}
+" sandwich {{
+let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
+let g:sandwich#recipes += [
+      \   {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
+      \   {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
+      \   {'buns': ['( ', ' )'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
+      \   {'buns': ['{\s*', '\s*}'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['{']},
+      \   {'buns': ['\[\s*', '\s*\]'], 'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['[']},
+      \   {'buns': ['(\s*', '\s*)'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['(']},
+      \ ]
 " }}
 
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
@@ -219,12 +248,11 @@ Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
 Plug 'gioele/vim-autoswap'
 Plug 'luochen1990/rainbow'
+Plug 'machakann/vim-sandwich'
 Plug 'preservim/tagbar'
-Plug 'simeji/winresizer'
 Plug 'simnalamburt/vim-mundo'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-surround'
 Plug 'wesQ3/vim-windowswap'
 call plug#end()
