@@ -14,6 +14,14 @@ set formatoptions=jcql
 nnoremap <space> <nop>
 let mapleader = "\<space>"
 " }}
+" Closing pair {{
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+" }}
 " Window {{
 nmap ç <c-w>c
 nnoremap ˇ <c-w><s-t>
@@ -107,7 +115,7 @@ let g:lightline = {
       \ 'my': {}
       \ }
 let g:lightline.active = {
-      \ 'left': [['mode', 'paste'], ['gitbranch'], ['readonly', 'absolutepath', 'modified']],
+      \ 'left': [['mode', 'paste'], ['gitbranch'], ['readonly', 'absolutepath', 'modified'], ['method']],
       \ 'right': [['lineinfo'], ['percent'], ['filetype']]
       \ }
 let g:lightline.tabline = {
@@ -129,6 +137,7 @@ let g:lightline.mode_map = {
 let g:lightline.component_function = {
       \ 'gitbranch': 'FugitiveHead',
       \ 'cocstatus': 'coc#status',
+      \ 'method': 'NearestMethodOrFunction'
       \ }
 
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
@@ -138,24 +147,17 @@ autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 filetype plugin on
 autocmd BufRead,BufNewFile *.volt setfiletype html
 
-function! OtherFiletypes()
-  " nmap <leader>f :Autoformat<cr>
-  nmap <leader>f :Prettier<cr>
-  vmap <leader>f :Autoformat<cr>
-endfunction
-
-nmap <leader>f :Prettier<cr>
-vmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f :Autoformat<cr>
+vmap <leader>f :Autoformat<cr>
 
 function! FiletypePrettier()
   nmap <leader>f :Prettier<cr>
   vmap <leader>f <Plug>(coc-format-selected)
 endfunction
 
-" autocmd filetype * call OtherFiletypes()
-autocmd BufRead,BufNewFile * call OtherFiletypes()
-autocmd BufRead,BufNewFile javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
-autocmd BufRead,BufNewFile coq call LightMode()
+autocmd filetype coq call LightMode()
+" autocmd filetype rust nmap <leader>f :RustFmt<cr>
+autocmd filetype javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
 " }}
 
 " Plugin configs {{
@@ -204,6 +206,13 @@ let g:sqh_connections = {
 set undofile
 set undodir=~/.vim/undo
 " }}
+" vista
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+" }}
 
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Theme
@@ -220,6 +229,7 @@ Plug 'joereynolds/SQHell.vim'
 Plug 'josa42/vim-lightline-coc'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'liuchengxu/vista.vim'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdtree'
@@ -236,10 +246,10 @@ Plug 'airblade/vim-gitgutter'
 Plug 'gioele/vim-autoswap'
 Plug 'luochen1990/rainbow'
 Plug 'tbmreza/vim-sandwich'
-Plug 'preservim/tagbar'
 Plug 'simnalamburt/vim-mundo'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'wesQ3/vim-windowswap'
+" Plug 'ryanoasis/vim-devicons'
 call plug#end()
