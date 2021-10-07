@@ -38,7 +38,7 @@ nmap – 4<c-w>-
 " }}
 " Day to day text editing {{
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-nmap mm yygclp
+nmap mm yygccp
 vmap m ygvgcP
 nnoremap Y y$
 nnoremap <leader>s :w<cr>
@@ -81,50 +81,6 @@ noremap <f1> :let @+ = expand("%")<cr>
 " Exit terminal mode {{
 tnoremap <f4> <c-\><c-n>
 " {{
-
-call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
-" Theme
-Plug 'itchyny/vim-gitbranch'
-Plug 'tbmreza/lightline.vim'
-Plug 'arcticicestudio/nord-vim'
-Plug 'ayu-theme/ayu-vim'
-Plug 'morhetz/gruvbox'
-Plug 'rhysd/vim-color-spring-night'
-Plug 'savq/melange'
-" IDE
-Plug 'APZelos/blamer.nvim'
-Plug 'amadeus/vim-jsx'
-Plug 'joereynolds/SQHell.vim'
-Plug 'josa42/vim-lightline-coc'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'liuchengxu/vista.vim'
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'preservim/nerdtree'
-Plug 'rust-lang/rust.vim'
-Plug 'sbdchd/neoformat'
-Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-fugitive'
-Plug 'vim-autoformat/vim-autoformat'
-Plug 'whonore/Coqtail'
-Plug 'yuezk/vim-js'
-Plug 'non25/vim-svelte'
-" Text Editor
-Plug 'Yggdroot/indentLine'
-Plug 'airblade/vim-gitgutter'
-Plug 'gioele/vim-autoswap'
-Plug 'luochen1990/rainbow'
-Plug 'tbmreza/vim-sandwich'
-Plug 'simnalamburt/vim-mundo'
-Plug 'tbmreza/vim-context-commentstring'
-Plug 'Shougo/context_filetype.vim'
-" Plug 'tpope/vim-commentary'
-Plug 'tomtom/tcomment_vim'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-sensible'
-Plug 'wesQ3/vim-windowswap'
-call plug#end()
 
 " Theme {{
 set termguicolors
@@ -201,7 +157,6 @@ function! FiletypePrettier()
   vmap <leader>f <Plug>(coc-format-selected)
 endfunction
 
-autocmd filetype coq call LightMode()
 " autocmd filetype rust nmap <leader>f :RustFmt<cr>
 autocmd filetype svelte,javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
 " }}
@@ -259,3 +214,48 @@ function! NearestMethodOrFunction() abort
 endfunction
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 " }}
+
+call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
+" Theme
+Plug 'itchyny/vim-gitbranch'
+Plug 'tbmreza/lightline.vim'
+Plug 'arcticicestudio/nord-vim'
+Plug 'ayu-theme/ayu-vim'
+Plug 'morhetz/gruvbox'
+Plug 'rhysd/vim-color-spring-night'
+Plug 'savq/melange'
+" IDE
+Plug 'APZelos/blamer.nvim'
+Plug 'amadeus/vim-jsx'
+Plug 'joereynolds/SQHell.vim'
+Plug 'josa42/vim-lightline-coc'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'liuchengxu/vista.vim'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'preservim/nerdtree'
+Plug 'rust-lang/rust.vim'
+Plug 'sbdchd/neoformat'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
+Plug 'vim-autoformat/vim-autoformat'
+Plug 'tbmreza/Coqtail'
+Plug 'yuezk/vim-js'
+Plug 'non25/vim-svelte'
+" Text Editor
+Plug 'junegunn/vim-peekaboo'
+Plug 'Yggdroot/indentLine'
+Plug 'airblade/vim-gitgutter'
+Plug 'gioele/vim-autoswap'
+Plug 'luochen1990/rainbow'
+Plug 'tbmreza/vim-sandwich'
+Plug 'simnalamburt/vim-mundo'
+Plug 'tbmreza/vim-context-commentstring'
+Plug 'Shougo/context_filetype.vim'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-sensible'
+Plug 'wesQ3/vim-windowswap'
+call plug#end()
