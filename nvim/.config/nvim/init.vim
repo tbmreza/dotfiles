@@ -47,7 +47,7 @@ nnoremap <silent> <esc><esc> :nohlsearch<cr>
 " }}
 " IDE {{
 nnoremap <leader>x :sp<cr>:SQHExecuteFile<cr>
-nnoremap <leader>b :NERDTreeMirror<cr>
+nnoremap <leader>b :Vexplore<cr>
 nnoremap <silent> <c-p> :Files<cr>
 nnoremap <silent> <c-f> :Rg<cr>
 " }}
@@ -80,6 +80,12 @@ noremap <f1> :let @+ = expand("%")<cr>
 " {{
 " Exit terminal mode {{
 tnoremap <f4> <c-\><c-n>
+" {{
+" netrw {{
+let g:netrw_liststyle = 3
+let g:netrw_banner = 0
+let g:netrw_browse_split = 2
+let g:netrw_winsize = 20
 " {{
 
 " Theme {{
@@ -142,33 +148,52 @@ let g:lightline.component_function = {
       \ 'method': 'NearestMethodOrFunction'
       \ }
 
-autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update() " freezes in tabline
 " }}
 
 " Filetype by filetype {{
 filetype plugin on
 autocmd BufRead,BufNewFile *.volt setfiletype html
 
+nmap <leader>F :AutoformatLine<cr>
 nmap <leader>f :Autoformat<cr>
 vmap <leader>f :Autoformat<cr>
+
+function! FiletypeCoq()
+  nmap <leader>j :CoqNext<cr>
+  nmap <leader>k :CoqUndo<cr>
+  nmap <leader>l :CoqToLine<cr>
+  " silent! call repeat#set("<leader>j")
+  " silent! call repeat#set("<leader>k")
+  " silent! call repeat#set("<leader>l")
+endfunction
+
+function! FiletypeRust()
+  nmap <leader>f :RustFmt<cr>
+endfunction
 
 function! FiletypePrettier()
   nmap <leader>f :Prettier<cr>
   vmap <leader>f <Plug>(coc-format-selected)
 endfunction
 
-" autocmd filetype rust nmap <leader>f :RustFmt<cr>
+function! FiletypePHP()
+  vnoremap <leader>dd yodd(<c-r>0);<esc>
+  nnoremap <leader>dd yeodd(<c-r>0);<esc>
+endfunction
+
+autocmd filetype coq call FiletypeCoq()
+autocmd filetype rust call FiletypeRust()
 autocmd filetype svelte,javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
+autocmd filetype php call FiletypePHP()
 " }}
 
 " Plugin configs {{
-" NERDTree
-let g:NERDTreeWinPos = "right"
 " indentLine
 let g:indentLine_char = '·'
 " Coqtail
 let g:coqtail_noimap = 1
-let g:coqtail_map_prefix = '<leader>q'
+" let g:coqtail_map_prefix = '<leader>q'
 " rust.vim
 syntax enable
 filetype plugin indent on
@@ -208,12 +233,15 @@ set undofile
 set undodir=~/.vim/undo
 " }}
 " vista
-let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+" let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 " }}
+
+silent! call repeat#set("zfib")
+silent! call repeat#set("zfip")
 
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Theme
@@ -221,20 +249,17 @@ Plug 'itchyny/vim-gitbranch'
 Plug 'tbmreza/lightline.vim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'ayu-theme/ayu-vim'
-Plug 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox' " easily toggle between colorschemes?
 Plug 'rhysd/vim-color-spring-night'
 Plug 'savq/melange'
 " IDE
 Plug 'APZelos/blamer.nvim'
-Plug 'amadeus/vim-jsx'
-Plug 'joereynolds/SQHell.vim'
+Plug 'joereynolds/SQHell.vim' " can these be part of polyglot?
 Plug 'josa42/vim-lightline-coc'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'liuchengxu/vista.vim'
-Plug 'maxmellon/vim-jsx-pretty'
+Plug 'liuchengxu/vista.vim' " fork this so it looks better
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'preservim/nerdtree'
 Plug 'rust-lang/rust.vim'
 Plug 'sbdchd/neoformat'
 Plug 'sheerun/vim-polyglot'
@@ -256,6 +281,6 @@ Plug 'tbmreza/vim-context-commentstring'
 Plug 'Shougo/context_filetype.vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-sensible'
+" Plug 'tpope/vim-sensible' " try living without this
 Plug 'wesQ3/vim-windowswap'
 call plug#end()
