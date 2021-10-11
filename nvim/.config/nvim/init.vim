@@ -90,28 +90,21 @@ let g:netrw_winsize = 20
 
 " Theme {{
 set termguicolors
-" let g:airline_theme='spring_night'
-" let ayucolor="mirage"
+let g:colorscheme_switcher_exclude_builtins = 1
 
 function! DarkMode()
   set background=dark
-  " let g:airline_theme='google_dark'
   let g:gruvbox_contrast_dark = 'soft'
 endfunction
 command! DarkMode call DarkMode()
 
 function! LightMode()
   set background=light
-  " let g:airline_theme='cobalt2'
   let g:gruvbox_contrast_light = 'soft'
 endfunction
 command! LightMode call LightMode()
 
 autocmd vimenter * ++nested colorscheme melange
-" autocmd vimenter * ++nested colorscheme gruvbox
-" autocmd vimenter * ++nested colorscheme ayu
-" autocmd vimenter * ++nested colorscheme spring-night
-" autocmd vimenter * ++nested colorscheme nord
 " }}
 
 " lightline {{
@@ -244,43 +237,47 @@ silent! call repeat#set("zfib")
 silent! call repeat#set("zfip")
 
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
-" Theme
-Plug 'itchyny/vim-gitbranch'
+" Appearence
+Plug 'itchyny/vim-gitbranch' " lightline component
+Plug 'josa42/vim-lightline-coc'
 Plug 'tbmreza/lightline.vim'
+Plug 'xolox/vim-colorscheme-switcher'
+Plug 'xolox/vim-misc' " xolox dependency
+" Switch using `:NextColorScheme`.
 Plug 'arcticicestudio/nord-vim'
 Plug 'ayu-theme/ayu-vim'
-Plug 'morhetz/gruvbox' " easily toggle between colorschemes?
+Plug 'morhetz/gruvbox'
 Plug 'rhysd/vim-color-spring-night'
 Plug 'savq/melange'
-" IDE
-Plug 'APZelos/blamer.nvim'
-Plug 'joereynolds/SQHell.vim' " can these be part of polyglot?
-Plug 'josa42/vim-lightline-coc'
+" Plugins that use dedicated split/modal
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'liuchengxu/vista.vim' " fork this so it looks better
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'rust-lang/rust.vim'
-Plug 'sbdchd/neoformat'
-Plug 'sheerun/vim-polyglot'
+Plug 'junegunn/gv.vim' " commit history
+Plug 'junegunn/vim-peekaboo' " peek registers
+Plug 'liuchengxu/vista.vim' " fork this to fix the missing icon
+Plug 'simnalamburt/vim-mundo' " undo history
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
-Plug 'vim-autoformat/vim-autoformat'
-Plug 'tbmreza/Coqtail'
-Plug 'yuezk/vim-js'
-Plug 'non25/vim-svelte'
-" Text Editor
-Plug 'junegunn/vim-peekaboo'
+" Plugins that don't
+Plug 'APZelos/blamer.nvim'
+Plug 'Shougo/context_filetype.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
-Plug 'gioele/vim-autoswap'
 Plug 'luochen1990/rainbow'
-Plug 'tbmreza/vim-sandwich'
-Plug 'simnalamburt/vim-mundo'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'sbdchd/neoformat'
 Plug 'tbmreza/vim-context-commentstring'
-Plug 'Shougo/context_filetype.vim'
+Plug 'tbmreza/vim-sandwich'
 Plug 'tomtom/tcomment_vim'
-Plug 'tpope/vim-repeat'
-" Plug 'tpope/vim-sensible' " try living without this
+Plug 'vim-autoformat/vim-autoformat'
 Plug 'wesQ3/vim-windowswap'
+" Languages support
+Plug 'joereynolds/SQHell.vim'
+Plug 'non25/vim-svelte'
+Plug 'rust-lang/rust.vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'tbmreza/Coqtail'
+Plug 'yuezk/vim-js'
+" Neovim 'bug' patches
+Plug 'gioele/vim-autoswap'
+Plug 'tpope/vim-repeat'
 call plug#end()
