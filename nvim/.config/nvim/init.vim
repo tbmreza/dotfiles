@@ -221,18 +221,18 @@ let g:sqh_connections = {
           \ 'database': '/Users/reza.handzalah/work/cmu-db-course/homework_sql/musicbrainz-cmudb2020.db'
           \ }
           \ }
-" mundo {{
+" mundo
 set undofile
 set undodir=~/.vim/undo
-" }}
 " vista
-" let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista#renderer#enable_icon = 0
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 " }}
 
+silent! call repeat#set("zfi{")
 silent! call repeat#set("zfib")
 silent! call repeat#set("zfip")
 
@@ -245,7 +245,6 @@ Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc' " xolox dependency
 " Switch using `:NextColorScheme`.
 Plug 'arcticicestudio/nord-vim'
-Plug 'ayu-theme/ayu-vim'
 Plug 'morhetz/gruvbox'
 Plug 'rhysd/vim-color-spring-night'
 Plug 'savq/melange'
@@ -254,7 +253,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/gv.vim' " commit history
 Plug 'junegunn/vim-peekaboo' " peek registers
-Plug 'liuchengxu/vista.vim' " fork this to fix the missing icon
+Plug 'liuchengxu/vista.vim'
 Plug 'simnalamburt/vim-mundo' " undo history
 Plug 'tpope/vim-fugitive'
 " Plugins that don't
@@ -268,6 +267,7 @@ Plug 'sbdchd/neoformat'
 Plug 'tbmreza/vim-context-commentstring'
 Plug 'tbmreza/vim-sandwich'
 Plug 'tomtom/tcomment_vim'
+Plug 'tyru/open-browser.vim'
 Plug 'vim-autoformat/vim-autoformat'
 Plug 'wesQ3/vim-windowswap'
 " Languages support
