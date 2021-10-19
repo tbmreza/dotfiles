@@ -177,7 +177,8 @@ endfunction
 
 autocmd filetype coq call FiletypeCoq()
 autocmd filetype rust call FiletypeRust()
-autocmd filetype svelte,javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
+" autocmd filetype svelte,javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
+autocmd filetype javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
 autocmd filetype php call FiletypePHP()
 " }}
 
@@ -230,6 +231,29 @@ function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+" prettier
+let g:prettier#quickfix_enabled = 0
+let g:prettier#autoformat_require_pragma = 0
+" au BufWritePre *.css,*.svelte,*.pcss,*.html,*.ts,*.js,*.json PrettierAsync
+au BufWritePre *.svelte PrettierAsync
+" remove coc-prettier if this works
+" emmet
+let g:user_emmet_expandabbr_key = '<C-e>'
+let g:user_emmet_settings = {
+\  'php' : {
+\    'snippets': {
+\      'dd': 'dd( | );'
+\    }
+\  },
+\  'javascript' : {
+\    'snippets': {
+\      'cl': 'console.log({ | });',
+\      'cd': 'console.dir( | );',
+\      'ci': 'console.info( | );',
+\      'cde': 'console.debug( | )'
+\    }
+\  }
+\}
 " }}
 
 silent! call repeat#set("zfi{")
@@ -262,7 +286,9 @@ Plug 'Shougo/context_filetype.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
 Plug 'luochen1990/rainbow'
+Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 Plug 'sbdchd/neoformat'
 Plug 'tbmreza/vim-context-commentstring'
 Plug 'tbmreza/vim-sandwich'
