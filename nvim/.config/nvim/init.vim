@@ -223,6 +223,7 @@ let g:sqh_connections = {
           \ }
           \ }
 " mundo
+nnoremap <F5> :MundoToggle<CR>
 set undofile
 set undodir=~/.vim/undo
 " vista
@@ -240,6 +241,11 @@ au BufWritePre *.svelte PrettierAsync
 " emmet
 let g:user_emmet_expandabbr_key = '<C-e>'
 let g:user_emmet_settings = {
+\  'rust' : {
+\    'snippets': {
+\      'fn': 'fn |() {\n}\n'
+\    }
+\  },
 \  'php' : {
 \    'snippets': {
 \      'dd': 'dd( | );'
