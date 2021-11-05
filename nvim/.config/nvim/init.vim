@@ -240,6 +240,7 @@ au BufWritePre *.svelte PrettierAsync
 " remove coc-prettier if this works
 " emmet
 let g:user_emmet_expandabbr_key = '<C-e>'
+let g:user_emmet_mode='i'
 let g:user_emmet_settings = {
 \  'rust' : {
 \    'snippets': {
