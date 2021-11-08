@@ -147,6 +147,14 @@ autocmd User CocStatusChange,CocDiagnosticChange call lightline#update() " freez
 filetype plugin on
 autocmd BufRead,BufNewFile *.volt setfiletype html
 
+let g:neoformat_javascript_prettier = {
+            \ 'exe': 'prettier',
+            \ 'args': ['--write'],
+            \ 'replace': 1,
+            \ }
+
+let g:neoformat_enabled_javascript = ['prettier']
+
 nmap <leader>f :Neoformat<cr>
 vmap <leader>f :Neoformat!<space>
 
@@ -173,16 +181,11 @@ function! FiletypePHP()
   nnoremap <leader>dd yeodd(<c-r>0);<esc>
 endfunction
 
-function! FiletypeJavaScript()
-  nmap <leader>f :! semistandard % --fix<cr>
-endfunction
-
 autocmd filetype coq call FiletypeCoq()
 autocmd filetype rust call FiletypeRust()
 " autocmd filetype svelte,javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
 " autocmd filetype javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
 autocmd filetype php call FiletypePHP()
-autocmd filetype javascript call FiletypeJavaScript()
 " }}
 
 " Plugin configs {{
