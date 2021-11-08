@@ -9,6 +9,7 @@ set mouse=nicr
 set clipboard+=unnamedplus
 set ignorecase smartcase
 set formatoptions=jcql
+set list listchars=eol:¬,tab:▸\
 
 " SPACE is leader {{
 nnoremap <space> <nop>
@@ -170,11 +171,6 @@ endfunction
 function! FiletypeRust()
   nmap <leader>f :RustFmt<cr>
 endfunction
-"
-" function! FiletypePrettier()
-"   nmap <leader>f :Prettier<cr>
-"   vmap <leader>f <Plug>(coc-format-selected)
-" endfunction
 
 function! FiletypePHP()
   vnoremap <leader>dd yodd(<c-r>0);<esc>
@@ -184,7 +180,6 @@ endfunction
 autocmd filetype coq call FiletypeCoq()
 autocmd filetype rust call FiletypeRust()
 " autocmd filetype svelte,javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
-" autocmd filetype javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
 autocmd filetype php call FiletypePHP()
 " }}
 
@@ -204,7 +199,6 @@ nmap gy <Plug>(coc-type-definition)
 nmap gi <Plug>(coc-implementation)
 nmap gr <Plug>(coc-references)
 nmap <f2> <Plug>(coc-rename)
-" command! -nargs=0 Prettier :CocCommand prettier.formatFile
 " blamer
 let g:blamer_enabled = 1
 let g:blamer_show_in_visual_modes = 0
@@ -216,16 +210,6 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 " neoformat
 let g:neoformat_try_formatprg = 1
-" let g:neoformat_enabled_javascript = ['prettier']
-" augroup NeoformatAutoFormat
-"     autocmd!
-"     autocmd FileType javascript setlocal formatprg=prettier\
-"                                              \--stdin\
-"                                              \--print-width\ 80\
-"                                              \--single-quote\
-"                                              \--trailing-comma\ es5
-"     autocmd BufWritePre *.js Neoformat
-" augroup END
 " let g:neoformat_basic_format_align = 1
 " let g:neoformat_basic_format_retab = 1
 " let g:neoformat_basic_format_trim = 1
@@ -249,11 +233,6 @@ function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
-" " prettier
-" let g:prettier#quickfix_enabled = 0
-" let g:prettier#autoformat_require_pragma = 0
-" " au BufWritePre *.css,*.svelte,*.pcss,*.html,*.ts,*.js,*.json PrettierAsync
-" au BufWritePre *.svelte PrettierAsync
 " emmet
 let g:user_emmet_expandabbr_key = '<C-e>'
 let g:user_emmet_mode='i'
@@ -311,7 +290,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'luochen1990/rainbow'
 Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 Plug 'sbdchd/neoformat'
 Plug 'tbmreza/vim-context-commentstring'
 Plug 'tbmreza/vim-sandwich'
