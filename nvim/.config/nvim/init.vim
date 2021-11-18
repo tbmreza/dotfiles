@@ -51,6 +51,7 @@ nnoremap <leader>x :sp<cr>:SQHExecuteFile<cr>
 nnoremap <leader>b :Vexplore<cr>
 nnoremap <silent> <c-p> :Files<cr>
 nnoremap <silent> <c-f> :Rg<cr>
+nnoremap <silent> <c-h> :History<cr>
 " }}
 " Terminal command integration {{
 nnoremap <leader>g :Git<space>
@@ -85,7 +86,9 @@ tnoremap <f4> <c-\><c-n>
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
 let g:netrw_browse_split = 2
-let g:netrw_winsize = 20
+let g:netrw_list_hide= '.*\.swp$,.DS_Store,*/tmp/*,*.so,*.swp,*.zip,*.git,^\.\.\=/\=$'
+let g:netrw_keepdir=0
+" let g:netrw_winsize = 20
 " }}
 
 " Theme {{
@@ -210,9 +213,6 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 " neoformat
 let g:neoformat_try_formatprg = 1
-" let g:neoformat_basic_format_align = 1
-" let g:neoformat_basic_format_retab = 1
-" let g:neoformat_basic_format_trim = 1
 " SQHell
 let g:sqh_provider = 'sqlite'
 let g:sqh_connections = {
@@ -247,6 +247,16 @@ let g:user_emmet_settings = {
 \      'dd': 'dd( | );'
 \    }
 \  },
+\  'typescriptreact' : {
+\    'snippets': {
+\      'cc': '{/* | */}'
+\    }
+\  },
+\  'javascriptreact' : {
+\    'snippets': {
+\      'cc': '{/* | */}'
+\    }
+\  },
 \  'javascript' : {
 \    'snippets': {
 \      'cl': 'console.log({ | });',
@@ -261,6 +271,62 @@ let g:user_emmet_settings = {
 silent! call repeat#set("zfi{")
 silent! call repeat#set("zfib")
 silent! call repeat#set("zfip")
+
+" Normally, the { and } motions only match completely empty lines.
+" With this plugin, lines that only contain whitespace are also matched.
+" URL: https://github.com/dbakker/vim-paragraph-motion
+" License: BSD Zero Clause License (0BSD)
+
+if exists('g:loaded_paragraphmotion') || &cp
+    finish
+endif
+let g:loaded_paragraphmotion = 1
+
+let s:save_cpo = &cpo
+set cpo&vim
+
+function! s:ParagraphMove(delta, visual, count)
+    normal! m'
+    if a:visual
+        normal! gv
+    endif
+
+    let i = 0
+    if a:delta > 0  " Forward paragraph motion.
+        normal! 0
+        while i < a:count
+            " First empty or whitespace-only line below a line that contains
+            " non-whitespace characters.
+            if search('\m\S', 'W') == 0 || search('\m^\s*$', 'W') == 0
+                call search('\m\%$', 'W')
+                return
+            endif
+            let i += 1
+        endwhile
+    elseif a:delta < 0  " Backward paragraph motion.
+        normal! ^
+        while i < a:count
+            " First empty or whitespace-only line above a line that contains
+            " non-whitespace characters.
+            if search('\m\S', 'bcW') == 0 || search('\m^\s*$', 'bW') == 0
+                call cursor(1, 1)
+                return
+            endif
+            let i += 1
+        endwhile
+    endif
+endfunction
+
+nnoremap <unique> <silent> } :<C-U>call <SID>ParagraphMove( 1, 0, v:count1)<CR>
+onoremap <unique> <silent> } :<C-U>call <SID>ParagraphMove( 1, 0, v:count1)<CR>
+xnoremap <unique> <silent> } :<C-U>call <SID>ParagraphMove( 1, 1, v:count1)<CR>
+nnoremap <unique> <silent> { :<C-U>call <SID>ParagraphMove(-1, 0, v:count1)<CR>
+onoremap <unique> <silent> { :<C-U>call <SID>ParagraphMove(-1, 0, v:count1)<CR>
+xnoremap <unique> <silent> { :<C-U>call <SID>ParagraphMove(-1, 1, v:count1)<CR>
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
+" end vim-paragraph-motion
 
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Appearence
@@ -282,6 +348,7 @@ Plug 'junegunn/vim-peekaboo' " peek registers
 Plug 'liuchengxu/vista.vim'
 Plug 'simnalamburt/vim-mundo' " undo history
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-vinegar'
 " Plugins that don't
 Plug 'APZelos/blamer.nvim'
 Plug 'Shougo/context_filetype.vim'
@@ -295,7 +362,6 @@ Plug 'tbmreza/vim-context-commentstring'
 Plug 'tbmreza/vim-sandwich'
 Plug 'tomtom/tcomment_vim'
 Plug 'tyru/open-browser.vim'
-" Plug 'vim-autoformat/vim-autoformat'
 Plug 'wesQ3/vim-windowswap'
 " Languages support
 Plug 'joereynolds/SQHell.vim'
