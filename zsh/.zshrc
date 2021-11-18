@@ -2,6 +2,9 @@ alias vpnstate="/opt/cisco/anyconnect/bin/vpn state"
 alias vpndisconnect="/opt/cisco/anyconnect/bin/vpn disconnect"
 alias vpnmbiz="printf '\n${VPNMBIZ}\n' | /opt/cisco/anyconnect/bin/vpn -s connect vpn-inter.mbizmarket.my.id"
 
+alias tmls="tmux ls"
+alias tmnew="tmuxnew"
+# alias tmattach="tmux attach -t"
 alias nv="nvim"
 alias nvs="nvim -S"
 alias le="exa -a"
@@ -11,14 +14,17 @@ alias gitstatus="git status"
 alias gitpull="git pull"
 alias gitlog="git log"
 alias gitcommitm="git commit -m"
-
-alias drestart="docker restart"
-alias dcompose="docker-compose"
+alias npmrun="npm run"
 
 alias zshrc="vi ~/.zshrc"
 
 export PATH="$PATH:$HOME/work/flutter/bin"
 export PATH="$PATH:$HOME/work/shops-flutter/drivers"
+export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="$PATH:$HOME/.tmux/scripts"
+export PATH="$PATH:$HOME/.composer/vendor/bin"
+
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -155,5 +161,8 @@ load-nvmrc() {
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
-
+export FZF_DEFAULT_COMMAND='rg --files --follow --no-ignore-vcs --hidden -g "!{node_modules/*,.git/*}"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# opam configuration
+test -r /Users/reza.handzalah/.opam/opam-init/init.zsh && . /Users/reza.handzalah/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
