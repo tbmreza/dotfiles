@@ -157,7 +157,14 @@ let g:neoformat_javascript_prettier = {
             \ 'replace': 1,
             \ }
 
+let g:neoformat_json5_prettier = {
+            \ 'exe': 'prettier',
+            \ 'args': ['--write'],
+            \ 'replace': 1,
+            \ }
+
 let g:neoformat_enabled_javascript = ['prettier']
+let g:neoformat_enabled_json5 = ['prettier']
 
 nmap <leader>f :Neoformat<cr>
 vmap <leader>f :Neoformat!<space>
