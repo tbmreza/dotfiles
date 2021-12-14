@@ -42,6 +42,7 @@ vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 nmap mm yygccp
 vmap m ygvgcP
 nnoremap Y y$
+nnoremap <leader>e :e!<cr>
 nnoremap <leader>s :w<cr>
 nnoremap <leader>; <s-a>;<esc>
 nnoremap <silent> <esc><esc> :nohlsearch<cr>
@@ -49,8 +50,10 @@ nnoremap <silent> <esc><esc> :nohlsearch<cr>
 " IDE {{
 nnoremap <leader>x :sp<cr>:SQHExecuteFile<cr>
 nnoremap <leader>b :Vexplore<cr>
-nnoremap <silent> <c-p> :Files<cr>
-nnoremap <silent> <c-f> :Rg<cr>
+" nnoremap <silent> <c-p> :Files<cr>
+" nnoremap <silent> <c-f> :Rg<cr>
+nnoremap <silent> <c-p> :Telescope find_files<cr>
+nnoremap <silent> <c-f> :Telescope live_grep<cr>
 nnoremap <silent> <c-h> :History<cr>
 " }}
 " Terminal command integration {{
@@ -335,6 +338,39 @@ let &cpo = s:save_cpo
 unlet s:save_cpo
 " end vim-paragraph-motion
 
+lua <<EOF
+-- require('telescope').setup{
+--   defaults = {
+--     -- Default configuration for telescope goes here:
+--     -- config_key = value,
+--     mappings = {
+--       i = {
+--         -- map actions.which_key to <C-h> (default: <C-/>)
+--         -- actions.which_key shows the mappings for your picker,
+--         -- e.g. git_{create, delete, ...}_branch for the git_branches picker
+--         ["<C-h>"] = "which_key"
+--       }
+--     }
+--   },
+--   pickers = {
+--     -- Default configuration for builtin pickers goes here:
+--     -- picker_name = {
+--     --   picker_config_key = value,
+--     --   ...
+--     -- }
+--     -- Now the picker_config_key will be applied every time you call this
+--     -- builtin picker
+--   },
+--   extensions = {
+--     -- Your extension configuration goes here:
+--     -- extension_name = {
+--     --   extension_config_key = value,
+--     -- }
+--     -- please take a look at the readme of the extension you want to configure
+--   }
+-- }
+EOF
+
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Appearence
 Plug 'itchyny/vim-gitbranch' " lightline component
@@ -348,10 +384,14 @@ Plug 'morhetz/gruvbox'
 Plug 'rhysd/vim-color-spring-night'
 Plug 'savq/melange'
 " Plugins that use dedicated split/modal
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+" Plug 'junegunn/fzf.vim'
 Plug 'junegunn/gv.vim' " commit history
 Plug 'junegunn/vim-peekaboo' " peek registers
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'liuchengxu/vista.vim'
 Plug 'simnalamburt/vim-mundo' " undo history
 Plug 'tpope/vim-fugitive'
@@ -380,4 +420,5 @@ Plug 'yuezk/vim-js'
 " Neovim 'bug' patches
 Plug 'gioele/vim-autoswap'
 Plug 'tpope/vim-repeat'
+Plug 'yardnsm/vim-import-cost', { 'do': 'npm install --production' }
 call plug#end()
