@@ -36,6 +36,13 @@ nmap ¯ 4<c-w><
 nmap ˘ 4<c-w>>
 nmap ± 4<c-w>+
 nmap – 4<c-w>-
+
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> ˙ :TmuxNavigateLeft<cr>
+nnoremap <silent> ∆ :TmuxNavigateDown<cr>
+nnoremap <silent> ˚ :TmuxNavigateUp<cr>
+nnoremap <silent> ¬ :TmuxNavigateRight<cr>
+
 " }}
 " Day to day text editing {{
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
@@ -384,8 +391,6 @@ Plug 'morhetz/gruvbox'
 Plug 'rhysd/vim-color-spring-night'
 Plug 'savq/melange'
 " Plugins that use dedicated split/modal
-" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" Plug 'junegunn/fzf.vim'
 Plug 'junegunn/gv.vim' " commit history
 Plug 'junegunn/vim-peekaboo' " peek registers
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -401,6 +406,7 @@ Plug 'APZelos/blamer.nvim'
 Plug 'Shougo/context_filetype.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'luochen1990/rainbow'
 Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -409,6 +415,7 @@ Plug 'tbmreza/vim-context-commentstring'
 Plug 'tbmreza/vim-sandwich'
 Plug 'tomtom/tcomment_vim'
 Plug 'tyru/open-browser.vim'
+Plug 'yardnsm/vim-import-cost', { 'do': 'npm install --production' }
 Plug 'wesQ3/vim-windowswap'
 " Languages support
 Plug 'joereynolds/SQHell.vim'
@@ -420,5 +427,4 @@ Plug 'yuezk/vim-js'
 " Neovim 'bug' patches
 Plug 'gioele/vim-autoswap'
 Plug 'tpope/vim-repeat'
-Plug 'yardnsm/vim-import-cost', { 'do': 'npm install --production' }
 call plug#end()
