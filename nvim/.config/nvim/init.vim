@@ -1,4 +1,6 @@
 command! Vimrc :vs $HOME/.dotfiles/nvim/.config/nvim/init.vim
+command! Up :cd ..
+command! Back :cd -
 
 set hidden
 set updatetime=200
@@ -18,6 +20,7 @@ let mapleader = "\<space>"
 " Closing pair {{
 inoremap " ""<left>
 inoremap ' ''<left>
+inoremap < <><left>
 inoremap ( ()<left>
 inoremap [ []<left>
 inoremap { {}<left>
@@ -53,6 +56,8 @@ nnoremap <leader>e :e!<cr>
 nnoremap <leader>s :w<cr>
 nnoremap <leader>; <s-a>;<esc>
 nnoremap <silent> <esc><esc> :nohlsearch<cr>
+" Abort sandwich
+nnoremap <silent> s<esc> <nop>
 " }}
 " IDE {{
 nnoremap <leader>x :sp<cr>:SQHExecuteFile<cr>
@@ -117,7 +122,11 @@ function! LightMode()
 endfunction
 command! LightMode call LightMode()
 
-autocmd vimenter * ++nested colorscheme melange
+function! SetColorscheme()
+  colorscheme melange
+  hi! Normal guibg=NONE ctermbg=NONE " transparent window if terminal supports it
+endfunction
+autocmd vimenter * ++nested call SetColorscheme()
 " }}
 
 " lightline {{
@@ -190,6 +199,8 @@ endfunction
 
 function! FiletypeRust()
   nmap <leader>f :RustFmt<cr>
+  nnoremap <leader>dd yeoprintln!("{:?}", <c-r>0);<esc>
+  inoremap # #[]<left>
 endfunction
 
 function! FiletypePHP()
@@ -345,41 +356,14 @@ let &cpo = s:save_cpo
 unlet s:save_cpo
 " end vim-paragraph-motion
 
-lua <<EOF
--- require('telescope').setup{
---   defaults = {
---     -- Default configuration for telescope goes here:
---     -- config_key = value,
---     mappings = {
---       i = {
---         -- map actions.which_key to <C-h> (default: <C-/>)
---         -- actions.which_key shows the mappings for your picker,
---         -- e.g. git_{create, delete, ...}_branch for the git_branches picker
---         ["<C-h>"] = "which_key"
---       }
---     }
---   },
---   pickers = {
---     -- Default configuration for builtin pickers goes here:
---     -- picker_name = {
---     --   picker_config_key = value,
---     --   ...
---     -- }
---     -- Now the picker_config_key will be applied every time you call this
---     -- builtin picker
---   },
---   extensions = {
---     -- Your extension configuration goes here:
---     -- extension_name = {
---     --   extension_config_key = value,
---     -- }
---     -- please take a look at the readme of the extension you want to configure
---   }
--- }
-EOF
+" lua << END
+" require('lualine').setup()
+" END
 
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Appearence
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
 Plug 'itchyny/vim-gitbranch' " lightline component
 Plug 'josa42/vim-lightline-coc'
 Plug 'tbmreza/lightline.vim'
