@@ -60,12 +60,14 @@ nnoremap <silent> <esc><esc> :nohlsearch<cr>
 nnoremap <silent> s<esc> <nop>
 " Must have typed this by mistake
 nnoremap ZZ <nop>
+nnoremap - <nop>
 " }}
 " IDE {{
 nnoremap <leader>x :sp<cr>:SQHExecuteFile<cr>
 nnoremap <leader>b :Vexplore<cr>
 " nnoremap <silent> <c-p> :Files<cr>
 " nnoremap <silent> <c-f> :Rg<cr>
+nnoremap <leader>t :Telescope<space>
 nnoremap <silent> <c-p> :Telescope find_files<cr>
 nnoremap <silent> <c-f> :Telescope live_grep<cr>
 nnoremap <silent> <c-h> :History<cr>
@@ -255,6 +257,7 @@ let g:sqh_connections = {
           \ }
 " mundo
 nnoremap <F5> :MundoToggle<CR>
+let g:mundo_help = 1
 set undofile
 set undodir=~/.vim/undo
 " vista
