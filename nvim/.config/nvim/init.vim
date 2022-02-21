@@ -58,6 +58,8 @@ nnoremap <leader>; <s-a>;<esc>
 nnoremap <silent> <esc><esc> :nohlsearch<cr>
 " Abort sandwich
 nnoremap <silent> s<esc> <nop>
+" Must have typed this by mistake
+nnoremap ZZ <nop>
 " }}
 " IDE {{
 nnoremap <leader>x :sp<cr>:SQHExecuteFile<cr>
@@ -267,7 +269,9 @@ let g:user_emmet_mode='i'
 let g:user_emmet_settings = {
 \  'rust' : {
 \    'snippets': {
-\      'fn': 'fn |() {\n}\n'
+\      'println': 'println!("|");',
+\      'fn': 'fn |() { }',
+\      'test': '#[cfg(test)] mod tests { use super::*;  #[test] fn test_sanity() { assert_eq!(12, 12); } }',
 \    }
 \  },
 \  'php' : {
