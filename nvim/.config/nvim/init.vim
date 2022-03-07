@@ -1,6 +1,8 @@
 command! Vimrc :vs $HOME/.dotfiles/nvim/.config/nvim/init.vim
 command! Up :cd ..
 command! Back :cd -
+command! Scroll :windo set scrollbind
+command! ScrollOff :windo set scrollbind!
 
 set hidden
 set updatetime=200
@@ -19,7 +21,6 @@ let mapleader = "\<space>"
 " }}
 " Closing pair {{
 inoremap " ""<left>
-inoremap ' ''<left>
 inoremap < <><left>
 inoremap ( ()<left>
 inoremap [ []<left>
@@ -55,12 +56,20 @@ nnoremap Y y$
 nnoremap <leader>e :e!<cr>
 nnoremap <leader>s :w<cr>
 nnoremap <leader>; <s-a>;<esc>
+nnoremap <leader>. <s-a>.<esc>
 nnoremap <silent> <esc><esc> :nohlsearch<cr>
 " Abort sandwich
 nnoremap <silent> s<esc> <nop>
 " Must have typed this by mistake
 nnoremap ZZ <nop>
 nnoremap - <nop>
+" Move lines
+nnoremap <c-j> :m .+1<CR>==
+nnoremap <c-k> :m .-2<CR>==
+inoremap <c-j> <Esc>:m .+1<CR>==gi
+inoremap <c-k> <Esc>:m .-2<CR>==gi
+vnoremap <c-j> :m '>+1<CR>gv=gv
+vnoremap <c-k> :m '<-2<CR>gv=gv
 " }}
 " IDE {{
 nnoremap <leader>x :sp<cr>:SQHExecuteFile<cr>
@@ -186,8 +195,15 @@ let g:neoformat_json5_prettier = {
             \ 'replace': 1,
             \ }
 
+let g:neoformat_racket_fmt = {
+            \ 'exe': 'raco',
+            \ 'args': ['fmt', '-i'],
+            \ 'replace': 1,
+            \ }
+
 let g:neoformat_enabled_javascript = ['prettier']
 let g:neoformat_enabled_json5 = ['prettier']
+let g:neoformat_enabled_racket = ['fmt']
 
 nmap <leader>f :Neoformat<cr>
 vmap <leader>f :Neoformat!<space>
@@ -273,6 +289,7 @@ let g:user_emmet_settings = {
 \  'rust' : {
 \    'snippets': {
 \      'println': 'println!("|");',
+\      'println!': 'println!("|");',
 \      'fn': 'fn |() { }',
 \      'test': '#[cfg(test)] mod tests { use super::*;  #[test] fn test_sanity() { assert_eq!(12, 12); } }',
 \    }
@@ -370,7 +387,6 @@ unlet s:save_cpo
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Appearence
 Plug 'nvim-lualine/lualine.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
 Plug 'itchyny/vim-gitbranch' " lightline component
 Plug 'josa42/vim-lightline-coc'
 Plug 'tbmreza/lightline.vim'
@@ -409,8 +425,10 @@ Plug 'tyru/open-browser.vim'
 Plug 'yardnsm/vim-import-cost', { 'do': 'npm install --production' }
 Plug 'wesQ3/vim-windowswap'
 " Languages support
+Plug 'benknoble/vim-racket'
 Plug 'joereynolds/SQHell.vim'
 Plug 'non25/vim-svelte'
+Plug 'rhysd/reply.vim', { 'on': ['Repl', 'ReplAuto'] }
 Plug 'rust-lang/rust.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'tbmreza/Coqtail'
