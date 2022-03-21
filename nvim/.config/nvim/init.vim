@@ -4,16 +4,36 @@ command! Back :cd -
 command! Scroll :windo set scrollbind
 command! ScrollOff :windo set scrollbind!
 
-set hidden
-set updatetime=200
-set cursorline
-set nowrap
-set nu rnu
-set mouse=nicr
-set clipboard+=unnamedplus
-set ignorecase smartcase
-set formatoptions=jcql
-set list listchars=eol:¬,tab:▸\
+lua << END
+local o = vim.o
+local wo = vim.wo
+local bo = vim.bo
+
+o.hidden = true
+o.updatetime = 200
+wo.cursorline = true
+wo.wrap = false
+wo.nu = true
+wo.rnu = true
+o.mouse = 'nicr'
+o.clipboard = 'unnamedplus'
+o.ignorecase = true
+o.smartcase = true
+bo.formatoptions = 'jcql'
+o.list = true
+o.listchars = 'eol:¬,tab:▸\\'
+END
+
+" set hidden
+" set updatetime=200
+" set cursorline
+" set nowrap
+" set nu rnu
+" set mouse=nicr
+" set clipboard+=unnamedplus
+" set ignorecase smartcase
+" set formatoptions=jcql
+" set list listchars=eol:¬,tab:▸\
 
 " SPACE is leader {{
 nnoremap <space> <nop>
@@ -57,6 +77,9 @@ nnoremap <leader>e :e!<cr>
 nnoremap <leader>s :w<cr>
 nnoremap <leader>; <s-a>;<esc>
 nnoremap <leader>. <s-a>.<esc>
+nnoremap <leader>, <s-a>,<esc>
+nnoremap <leader>> <s-a> =>
+nnoremap <leader>: <s-a> ->
 nnoremap <silent> <esc><esc> :nohlsearch<cr>
 " Abort sandwich
 nnoremap <silent> s<esc> <nop>
@@ -66,12 +89,11 @@ nnoremap - <nop>
 " Move lines
 nnoremap <c-j> :m .+1<CR>==
 nnoremap <c-k> :m .-2<CR>==
-inoremap <c-j> <Esc>:m .+1<CR>==gi
-inoremap <c-k> <Esc>:m .-2<CR>==gi
 vnoremap <c-j> :m '>+1<CR>gv=gv
 vnoremap <c-k> :m '<-2<CR>gv=gv
 " }}
 " IDE {{
+" inoremap <c-j> <Plug>JiraComplete  " needs python provider
 nnoremap <leader>x :sp<cr>:SQHExecuteFile<cr>
 nnoremap <leader>b :Vexplore<cr>
 " nnoremap <silent> <c-p> :Files<cr>
@@ -118,6 +140,10 @@ let g:netrw_list_hide= '.*\.swp$,.DS_Store,*/tmp/*,*.so,*.swp,*.zip,*.git,^\.\.\
 let g:netrw_keepdir=0
 " let g:netrw_winsize = 20
 " }}
+
+" leafOfTree/vim-svelte-plugin
+let g:vim_svelte_plugin_load_full_syntax = 1
+let g:vim_svelte_plugin_use_typescript = 1
 
 " Theme {{
 set termguicolors
@@ -418,6 +444,7 @@ Plug 'luochen1990/rainbow'
 Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sbdchd/neoformat'
+" Plug 'tbmreza/coc-jira-complete', {'branch': 'fix-deprecation-warning', 'do': 'yarn install --frozen-lockfile'}
 Plug 'tbmreza/vim-context-commentstring'
 Plug 'tbmreza/vim-sandwich'
 Plug 'tomtom/tcomment_vim'
@@ -427,7 +454,8 @@ Plug 'wesQ3/vim-windowswap'
 " Languages support
 Plug 'benknoble/vim-racket'
 Plug 'joereynolds/SQHell.vim'
-Plug 'non25/vim-svelte'
+" Plug 'non25/vim-svelte'
+Plug 'leafOfTree/vim-svelte-plugin'
 Plug 'rhysd/reply.vim', { 'on': ['Repl', 'ReplAuto'] }
 Plug 'rust-lang/rust.vim'
 Plug 'sheerun/vim-polyglot'
