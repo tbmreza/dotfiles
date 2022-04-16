@@ -81,6 +81,9 @@ nnoremap <leader>, <s-a>,<esc>
 nnoremap <leader>> <s-a> =>
 nnoremap <leader>: <s-a> ->
 nnoremap <silent> <esc><esc> :nohlsearch<cr>
+" Merge conflicts
+nmap <leader>gj :diffget //3<cr>
+nmap <leader>gf :diffget //2<cr>
 " Abort sandwich
 nnoremap <silent> s<esc> <nop>
 " Must have typed this by mistake
@@ -99,8 +102,10 @@ nnoremap <leader>b :Vexplore<cr>
 " nnoremap <silent> <c-p> :Files<cr>
 " nnoremap <silent> <c-f> :Rg<cr>
 nnoremap <leader>t :Telescope<space>
-nnoremap <silent> <c-p> :Telescope find_files<cr>
-nnoremap <silent> <c-f> :Telescope live_grep<cr>
+" nnoremap <silent> <c-p> :Telescope find_files<cr>
+nnoremap <silent> <c-p> :Files<cr>
+" nnoremap <silent> <c-f> :Telescope live_grep<cr>
+nnoremap <silent> <c-f> :Rg<cr>
 nnoremap <silent> <c-h> :History<cr>
 " }}
 " Terminal command integration {{
@@ -208,6 +213,9 @@ autocmd User CocStatusChange,CocDiagnosticChange call lightline#update() " freez
 " Filetype by filetype {{
 filetype plugin on
 autocmd BufRead,BufNewFile *.volt setfiletype html
+" autocmd BufRead,BufNewFile *.abs setfiletype abs
+" syntax/synload.vim doesn't load?
+" au Syntax abs    runtime! syntax/abs.vim
 
 let g:neoformat_javascript_prettier = {
             \ 'exe': 'prettier',
@@ -312,12 +320,22 @@ autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 let g:user_emmet_expandabbr_key = '<C-e>'
 let g:user_emmet_mode='i'
 let g:user_emmet_settings = {
+\  'racket' : {
+\    'snippets': {
+\      'def': '(define |)',
+\      'l': '(λ',
+\      'lamb': '(λ',
+\      'lambda': '(λ'
+\    }
+\  },
 \  'rust' : {
 \    'snippets': {
+\      'prin': 'println!("|");',
 \      'println': 'println!("|");',
 \      'println!': 'println!("|");',
 \      'fn': 'fn |() { }',
-\      'test': '#[cfg(test)] mod tests { use super::*;  #[test] fn test_sanity() { assert_eq!(12, 12); } }',
+\      'test': '#[test] fn test_sanity() { assert_eq!(12, 12); }',
+\      'modtests': '#[cfg(test)] mod tests { use super::*;  #[test] fn test_sanity() { assert_eq!(12, 12); } }',
 \    }
 \  },
 \  'php' : {
@@ -350,66 +368,6 @@ silent! call repeat#set("zfi{")
 silent! call repeat#set("zfib")
 silent! call repeat#set("zfip")
 
-" Normally, the { and } motions only match completely empty lines.
-" With this plugin, lines that only contain whitespace are also matched.
-" URL: https://github.com/dbakker/vim-paragraph-motion
-" License: BSD Zero Clause License (0BSD)
-
-if exists('g:loaded_paragraphmotion') || &cp
-    finish
-endif
-let g:loaded_paragraphmotion = 1
-
-let s:save_cpo = &cpo
-set cpo&vim
-
-function! s:ParagraphMove(delta, visual, count)
-    normal! m'
-    if a:visual
-        normal! gv
-    endif
-
-    let i = 0
-    if a:delta > 0  " Forward paragraph motion.
-        normal! 0
-        while i < a:count
-            " First empty or whitespace-only line below a line that contains
-            " non-whitespace characters.
-            if search('\m\S', 'W') == 0 || search('\m^\s*$', 'W') == 0
-                call search('\m\%$', 'W')
-                return
-            endif
-            let i += 1
-        endwhile
-    elseif a:delta < 0  " Backward paragraph motion.
-        normal! ^
-        while i < a:count
-            " First empty or whitespace-only line above a line that contains
-            " non-whitespace characters.
-            if search('\m\S', 'bcW') == 0 || search('\m^\s*$', 'bW') == 0
-                call cursor(1, 1)
-                return
-            endif
-            let i += 1
-        endwhile
-    endif
-endfunction
-
-nnoremap <unique> <silent> } :<C-U>call <SID>ParagraphMove( 1, 0, v:count1)<CR>
-onoremap <unique> <silent> } :<C-U>call <SID>ParagraphMove( 1, 0, v:count1)<CR>
-xnoremap <unique> <silent> } :<C-U>call <SID>ParagraphMove( 1, 1, v:count1)<CR>
-nnoremap <unique> <silent> { :<C-U>call <SID>ParagraphMove(-1, 0, v:count1)<CR>
-onoremap <unique> <silent> { :<C-U>call <SID>ParagraphMove(-1, 0, v:count1)<CR>
-xnoremap <unique> <silent> { :<C-U>call <SID>ParagraphMove(-1, 1, v:count1)<CR>
-
-let &cpo = s:save_cpo
-unlet s:save_cpo
-" end vim-paragraph-motion
-
-" lua << END
-" require('lualine').setup()
-" END
-
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Appearence
 Plug 'nvim-lualine/lualine.nvim'
@@ -430,6 +388,8 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vista.vim'
 Plug 'simnalamburt/vim-mundo' " undo history
 Plug 'tpope/vim-fugitive'
@@ -454,6 +414,7 @@ Plug 'wesQ3/vim-windowswap'
 " Languages support
 Plug 'benknoble/vim-racket'
 Plug 'joereynolds/SQHell.vim'
+Plug 'pechorin/any-jump.vim'
 " Plug 'non25/vim-svelte'
 Plug 'leafOfTree/vim-svelte-plugin'
 Plug 'rhysd/reply.vim', { 'on': ['Repl', 'ReplAuto'] }
@@ -464,4 +425,5 @@ Plug 'yuezk/vim-js'
 " Neovim 'bug' patches
 Plug 'gioele/vim-autoswap'
 Plug 'tpope/vim-repeat'
+Plug 'dbakker/vim-paragraph-motion'
 call plug#end()

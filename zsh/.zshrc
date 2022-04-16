@@ -5,11 +5,19 @@ alias vpnmbiz="printf '\n${VPNMBIZ}\n' | /opt/cisco/anyconnect/bin/vpn -s connec
 alias tmls="tmux ls"
 alias tmnew="tmuxnew"
 # alias tmattach="tmux attach -t"
+alias rack="racket"
+alias racoi="raco pkg install"
 alias nv="nvim"
 alias nvs="nvim -S"
 alias le="exa -a"
 alias ctn="cargo test -- --nocapture"
 
+alias firefox="/Applications/Firefox.app/Contents/MacOS/firefox"
+
+alias chromedriver="$HOME/work/drivers/chrome/current/chromedriver"
+alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
+alias chrome-canary="/Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Google\ Chrome\ Canary"
+alias chromium="/Applications/Chromium.app/Contents/MacOS/Chromium"
 alias gitstatus="git status"
 alias gitpull="git pull"
 alias gitlog="git log"
@@ -18,13 +26,16 @@ alias npmrun="npm run"
 
 alias zshrc="vi ~/.zshrc"
 
+export PATH="$PATH:$HOME/work/v0.6.0/nvim-osx64/bin"
 export PATH="$PATH:$HOME/work/flutter/bin"
-export PATH="$PATH:$HOME/work/shops-flutter/drivers"
+export PATH="$PATH:$HOME/work/drivers"
 export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="$PATH:$HOME/.tmux/scripts"
 export PATH="$PATH:$HOME/.composer/vendor/bin"
+export PATH="$PATH:/Applications/Racket v8.4/bin"
 
+export HOMEBREW_GITHUB_API_TOKEN=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
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -166,3 +177,12 @@ export FZF_DEFAULT_COMMAND='rg --files --follow --no-ignore-vcs --hidden -g "!{n
 
 # opam configuration
 test -r /Users/reza.handzalah/.opam/opam-init/init.zsh && . /Users/reza.handzalah/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+# python
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+# after the plugins
+bindkey "^P" up-line-or-search
+bindkey "^N" down-line-or-search
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
