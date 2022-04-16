@@ -170,7 +170,7 @@ function! SetColorscheme()
   colorscheme melange
   hi! Normal guibg=NONE ctermbg=NONE " transparent window if terminal supports it
 endfunction
-autocmd vimenter * ++nested call SetColorscheme()
+" autocmd vimenter * ++nested call SetColorscheme()
 " }}
 
 " lightline {{
