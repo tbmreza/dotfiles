@@ -1,9 +1,3 @@
-command! Vimrc :vs $HOME/.dotfiles/nvim/.config/nvim/init.vim
-command! Up :cd ..
-command! Back :cd -
-command! Scroll :windo set scrollbind
-command! ScrollOff :windo set scrollbind!
-
 lua << END
 local o = vim.o
 local wo = vim.wo
@@ -22,19 +16,25 @@ o.smartcase = true
 bo.formatoptions = 'jcql'
 o.list = true
 o.listchars = 'eol:¬,tab:▸\\'
+
+local def = vim.api.nvim_create_user_command
+def('Vimrc'    , 'vs $HOME/.dotfiles/nvim/.config/nvim/init.vim', { nargs = 0 })
+def('Up'       , 'cd ..', { nargs = 0 })
+def('Back'     , 'cd -', { nargs = 0 })
+def('Scroll'   , 'windo set scrollbind', { nargs = 0 })
+def('ScrollOff', 'windo set scrollbind!', { nargs = 0 })
+
+-- nmap ç <c-w>c
+local map = vim.api.nvim_set_keymap
+map('n', 'ç', '<c-w>c', {noremap = true})
+-- nmap ˙ <c-w>h
+-- nmap ∆ <c-w>j
+-- nmap ˚ <c-w>k
+-- nmap ¬ <c-w>l
+
 END
 
-" set hidden
-" set updatetime=200
-" set cursorline
-" set nowrap
-" set nu rnu
-" set mouse=nicr
-" set clipboard+=unnamedplus
-" set ignorecase smartcase
-" set formatoptions=jcql
-" set list listchars=eol:¬,tab:▸\
-
+" remaps in separate file?
 " SPACE is leader {{
 nnoremap <space> <nop>
 let mapleader = "\<space>"
@@ -48,7 +48,7 @@ inoremap { {}<left>
 inoremap {<CR> {<CR>}<ESC>O
 " }}
 " Window {{
-nmap ç <c-w>c
+" nmap ç <c-w>c
 nnoremap ˇ <c-w><s-t>
 nnoremap — <c-w>_
 nmap ≠ <c-w>=
