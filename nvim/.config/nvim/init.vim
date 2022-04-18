@@ -24,26 +24,34 @@ def('Back'     , 'cd -', { nargs = 0 })
 def('Scroll'   , 'windo set scrollbind', { nargs = 0 })
 def('ScrollOff', 'windo set scrollbind!', { nargs = 0 })
 
--- Window
+-- remaps in separate file?
+vim.g.mapleader = ' '
+
 local map = vim.api.nvim_set_keymap
-map('n', 'ç', '<c-w>c', {noremap = true})
-map('n', 'ˇ', '<c-w><s-t>', {noremap = true})
-map('n', '≠', '<c-w>=', {noremap = true})
-map('n', '˙', '<c-w>h', {noremap = true})
-map('n', '∆', '<c-w>j', {noremap = true})
-map('n', '˚', '<c-w>k', {noremap = true})
-map('n', '¬', '<c-w>l', {noremap = true})
-map('n', '¯', '4<c-w><', {noremap = true})
-map('n', '˘', '4<c-w>>', {noremap = true})
-map('n', '±', '4<c-w>+', {noremap = true})
-map('n', '–', '4<c-w>-', {noremap = true})
+
+-- Window
+map('n', 'ç', '<c-w>c', { noremap = true })
+map('n', 'ˇ', '<c-w><s-t>', { noremap = true })
+map('n', '≠', '<c-w>=', { noremap = true })
+map('n', '˙', '<c-w>h', { noremap = false })
+map('n', '∆', '<c-w>j', { noremap = false })
+map('n', '˚', '<c-w>k', { noremap = false })
+map('n', '¬', '<c-w>l', { noremap = false })
+map('n', '¯', '4<c-w><', { noremap = true })
+map('n', '˘', '4<c-w>>', { noremap = true })
+map('n', '±', '4<c-w>+', { noremap = true })
+map('n', '–', '4<c-w>-', { noremap = true })
+
+vim.g.tmux_navigator_no_mappings = 1
+map('n', '˙', ':TmuxNavigateLeft<cr>', { noremap = true, silent = true })
+map('n', '∆', ':TmuxNavigateDown<cr>', { noremap = true, silent = true })
+map('n', '˚', ':TmuxNavigateUp<cr>', { noremap = true, silent = true })
+map('n', '¬', ':TmuxNavigateRight<cr>', { noremap = true, silent = true })
 
 END
-
-" remaps in separate file?
 " SPACE is leader {{
-nnoremap <space> <nop>
-let mapleader = "\<space>"
+" nnoremap <space> <nop>
+" let mapleader = "\<space>"
 " }}
 " Closing pair {{
 inoremap " ""<left>
@@ -54,11 +62,11 @@ inoremap { {}<left>
 inoremap {<CR> {<CR>}<ESC>O
 " }}
 " Window {{
-let g:tmux_navigator_no_mappings = 1
-nnoremap <silent> ˙ :TmuxNavigateLeft<cr>
-nnoremap <silent> ∆ :TmuxNavigateDown<cr>
-nnoremap <silent> ˚ :TmuxNavigateUp<cr>
-nnoremap <silent> ¬ :TmuxNavigateRight<cr>
+" let g:tmux_navigator_no_mappings = 1
+" nnoremap <silent> ˙ :TmuxNavigateLeft<cr>
+" nnoremap <silent> ∆ :TmuxNavigateDown<cr>
+" nnoremap <silent> ˚ :TmuxNavigateUp<cr>
+" nnoremap <silent> ¬ :TmuxNavigateRight<cr>
 
 " }}
 " Day to day text editing {{
