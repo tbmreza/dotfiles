@@ -24,13 +24,19 @@ def('Back'     , 'cd -', { nargs = 0 })
 def('Scroll'   , 'windo set scrollbind', { nargs = 0 })
 def('ScrollOff', 'windo set scrollbind!', { nargs = 0 })
 
--- nmap ç <c-w>c
+-- Window
 local map = vim.api.nvim_set_keymap
 map('n', 'ç', '<c-w>c', {noremap = true})
--- nmap ˙ <c-w>h
--- nmap ∆ <c-w>j
--- nmap ˚ <c-w>k
--- nmap ¬ <c-w>l
+map('n', 'ˇ', '<c-w><s-t>', {noremap = true})
+map('n', '≠', '<c-w>=', {noremap = true})
+map('n', '˙', '<c-w>h', {noremap = true})
+map('n', '∆', '<c-w>j', {noremap = true})
+map('n', '˚', '<c-w>k', {noremap = true})
+map('n', '¬', '<c-w>l', {noremap = true})
+map('n', '¯', '4<c-w><', {noremap = true})
+map('n', '˘', '4<c-w>>', {noremap = true})
+map('n', '±', '4<c-w>+', {noremap = true})
+map('n', '–', '4<c-w>-', {noremap = true})
 
 END
 
@@ -48,19 +54,6 @@ inoremap { {}<left>
 inoremap {<CR> {<CR>}<ESC>O
 " }}
 " Window {{
-" nmap ç <c-w>c
-nnoremap ˇ <c-w><s-t>
-nnoremap — <c-w>_
-nmap ≠ <c-w>=
-nmap ˙ <c-w>h
-nmap ∆ <c-w>j
-nmap ˚ <c-w>k
-nmap ¬ <c-w>l
-nmap ¯ 4<c-w><
-nmap ˘ 4<c-w>>
-nmap ± 4<c-w>+
-nmap – 4<c-w>-
-
 let g:tmux_navigator_no_mappings = 1
 nnoremap <silent> ˙ :TmuxNavigateLeft<cr>
 nnoremap <silent> ∆ :TmuxNavigateDown<cr>
