@@ -26,7 +26,7 @@ alias npmrun="npm run"
 
 alias zshrc="vi ~/.zshrc"
 
-export PATH="$PATH:$HOME/work/v0.6.0/nvim-osx64/bin"
+export PATH="$PATH:$HOME/work/v0.7.0/nvim-osx64/bin"
 export PATH="$PATH:$HOME/work/flutter/bin"
 export PATH="$PATH:$HOME/work/drivers"
 export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
