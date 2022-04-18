@@ -29,6 +29,14 @@ vim.g.mapleader = ' '
 
 local map = vim.api.nvim_set_keymap
 
+-- Closing pair
+map('i', '"', '""<left>', { noremap = true })
+map('i', '<', '<><left>', { noremap = true })
+map('i', '(', '()<left>', { noremap = true })
+map('i', '[', '[]<left>', { noremap = true })
+map('i', '{', '{}<left>', { noremap = true })
+map('i', '{<cr>', '{<CR>}<ESC>O', { noremap = true })
+
 -- Window
 map('n', 'ç', '<c-w>c', { noremap = true })
 map('n', 'ˇ', '<c-w><s-t>', { noremap = true })
@@ -54,12 +62,12 @@ END
 " let mapleader = "\<space>"
 " }}
 " Closing pair {{
-inoremap " ""<left>
-inoremap < <><left>
-inoremap ( ()<left>
-inoremap [ []<left>
-inoremap { {}<left>
-inoremap {<CR> {<CR>}<ESC>O
+" inoremap " ""<left>
+" inoremap < <><left>
+" inoremap ( ()<left>
+" inoremap [ []<left>
+" inoremap { {}<left>
+" inoremap {<CR> {<CR>}<ESC>O
 " }}
 " Window {{
 " let g:tmux_navigator_no_mappings = 1
