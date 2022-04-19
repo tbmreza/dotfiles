@@ -70,6 +70,15 @@ map('n', '<leader>>', 'a=>', { noremap = true })
 map('n', '<leader>:', 'a->', { noremap = true })
 map('n', '<esc><esc>', ':nohlsearch<cr>', { noremap = true, silent = true })
 
+-- Theme
+vim.cmd [[
+  function! SetColorscheme()
+    colorscheme melange
+    hi! Normal guibg=NONE ctermbg=NONE " transparent window if terminal supports it
+  endfunction
+  autocmd vimenter * ++nested call SetColorscheme()
+]]
+
 END
 " SPACE is leader {{
 " nnoremap <space> <nop>
@@ -177,11 +186,12 @@ let g:vim_svelte_plugin_use_typescript = 1
 set termguicolors
 let g:colorscheme_switcher_exclude_builtins = 1
 
-function! DarkMode()
-  set background=dark
-  let g:gruvbox_contrast_dark = 'soft'
-endfunction
-command! DarkMode call DarkMode()
+" unused? and LightMode too
+" function! DarkMode()
+"   set background=dark
+"   let g:gruvbox_contrast_dark = 'soft'
+" endfunction
+" command! DarkMode call DarkMode()
 
 function! LightMode()
   set background=light
@@ -189,11 +199,11 @@ function! LightMode()
 endfunction
 command! LightMode call LightMode()
 
-function! SetColorscheme()
-  colorscheme melange
-  hi! Normal guibg=NONE ctermbg=NONE " transparent window if terminal supports it
-endfunction
-autocmd vimenter * ++nested call SetColorscheme()
+" function! SetColorscheme()
+"   colorscheme melange
+"   hi! Normal guibg=NONE ctermbg=NONE " transparent window if terminal supports it
+" endfunction
+" autocmd vimenter * ++nested call SetColorscheme()
 " }}
 
 " lightline {{
@@ -274,11 +284,11 @@ function! FiletypeCoq()
   " silent! call repeat#set("<leader>l")
 endfunction
 
-function! FiletypeRust()
-  nmap <leader>f :RustFmt<cr>
-  nnoremap <leader>dd yeoprintln!("{:?}", <c-r>0);<esc>
-  inoremap # #[]<left>
-endfunction
+" function! FiletypeRust()
+"   nmap <leader>f :RustFmt<cr>
+"   nnoremap <leader>dd yeoprintln!("{:?}", <c-r>0);<esc>
+"   inoremap # #[]<left>
+" endfunction
 
 function! FiletypePHP()
   vnoremap <leader>dd yodd(<c-r>0);<esc>
@@ -286,7 +296,8 @@ function! FiletypePHP()
 endfunction
 
 autocmd filetype coq call FiletypeCoq()
-autocmd filetype rust call FiletypeRust()
+" autocmd filetype rust call FiletypeRust()
+lua require('tbmreza.rust')
 " autocmd filetype svelte,javascript,javascriptreact,typescript,typescriptreact,json,graphql,css,markdown call FiletypePrettier()
 autocmd filetype php call FiletypePHP()
 " }}
