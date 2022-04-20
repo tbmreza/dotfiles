@@ -29,6 +29,12 @@ vim.g.mapleader = ' '
 
 local map = vim.api.nvim_set_keymap
 
+-- Plugin: mundo
+vim.g.mundo_help = 1
+o.undofile = true
+o.undodir = '~/.vim/undo'
+map('n', '<F5>', ':MundoToggle<cr>', { noremap = true })
+
 -- Closing pair
 map('i', '"', '""<left>', { noremap = true })
 map('i', '<', '<><left>', { noremap = true })
@@ -340,10 +346,10 @@ let g:sqh_connections = {
           \ }
           \ }
 " mundo
-nnoremap <F5> :MundoToggle<CR>
-let g:mundo_help = 1
-set undofile
-set undodir=~/.vim/undo
+" nnoremap <F5> :MundoToggle<CR>
+" let g:mundo_help = 1
+" set undofile
+" set undodir=~/.vim/undo
 " vista
 let g:vista#renderer#enable_icon = 0
 function! NearestMethodOrFunction() abort
