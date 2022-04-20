@@ -35,6 +35,15 @@ o.undofile = true
 o.undodir = '~/.vim/undo'
 map('n', '<F5>', ':MundoToggle<cr>', { noremap = true })
 
+-- Plugin: vista
+vim.g['vista#renderer#enable_icon'] = 0
+vim.cmd [[
+  function! NearestMethodOrFunction() abort
+    return get(b:, 'vista_nearest_method_or_function', '')
+  endfunction
+  autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+]]
+
 -- Closing pair
 map('i', '"', '""<left>', { noremap = true })
 map('i', '<', '<><left>', { noremap = true })
@@ -351,11 +360,11 @@ let g:sqh_connections = {
 " set undofile
 " set undodir=~/.vim/undo
 " vista
-let g:vista#renderer#enable_icon = 0
-function! NearestMethodOrFunction() abort
-  return get(b:, 'vista_nearest_method_or_function', '')
-endfunction
-autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+" let g:vista#renderer#enable_icon = 0
+" function! NearestMethodOrFunction() abort
+"   return get(b:, 'vista_nearest_method_or_function', '')
+" endfunction
+" autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 " emmet
 let g:user_emmet_expandabbr_key = '<C-e>'
 let g:user_emmet_mode='i'
@@ -363,9 +372,9 @@ let g:user_emmet_settings = {
 \  'racket' : {
 \    'snippets': {
 \      'def': '(define |)',
-\      'l': '(λ',
-\      'lamb': '(λ',
-\      'lambda': '(λ'
+\      'l': ' λ',
+\      'lamb': ' λ',
+\      'lambda': ' λ'
 \    }
 \  },
 \  'rust' : {
