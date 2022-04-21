@@ -44,6 +44,36 @@ vim.cmd [[
   autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 ]]
 
+-- Plugin: emmet
+vim.g.user_emmet_expandabbr_key = '<C-e>'
+vim.g.user_emmet_mode = 'i'
+vim.g.user_emmet_settings = {
+  racket = {
+    snippets = {
+      def = '(define |)',
+      dis = '(displayln |)'
+    }
+  },
+  rust = {
+    snippets = {
+      prin = 'println!("|");',
+      fn = 'fn |() { }',
+      test = '#[test] fn test_sanity() { assert_eq!(12, 12); }',
+      modtests = '#[cfg(test)] mod tests { use super::*;  #[test] fn test_sanity() { assert_eq!(12, 12); } }'
+    }
+  },
+  php = {
+    snippets = {
+      dd = 'dd( | );'
+    }
+  },
+  javascript = {
+    snippets = {
+      cl = 'console.log({ | });'
+    }
+  }
+}
+
 -- Closing pair
 map('i', '"', '""<left>', { noremap = true })
 map('i', '<', '<><left>', { noremap = true })
@@ -366,51 +396,51 @@ let g:sqh_connections = {
 " endfunction
 " autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 " emmet
-let g:user_emmet_expandabbr_key = '<C-e>'
-let g:user_emmet_mode='i'
-let g:user_emmet_settings = {
-\  'racket' : {
-\    'snippets': {
-\      'def': '(define |)',
-\      'l': ' λ',
-\      'lamb': ' λ',
-\      'lambda': ' λ'
-\    }
-\  },
-\  'rust' : {
-\    'snippets': {
-\      'prin': 'println!("|");',
-\      'println': 'println!("|");',
-\      'println!': 'println!("|");',
-\      'fn': 'fn |() { }',
-\      'test': '#[test] fn test_sanity() { assert_eq!(12, 12); }',
-\      'modtests': '#[cfg(test)] mod tests { use super::*;  #[test] fn test_sanity() { assert_eq!(12, 12); } }',
-\    }
-\  },
-\  'php' : {
-\    'snippets': {
-\      'dd': 'dd( | );'
-\    }
-\  },
-\  'typescriptreact' : {
-\    'snippets': {
-\      'cc': '{/* | */}'
-\    }
-\  },
-\  'javascriptreact' : {
-\    'snippets': {
-\      'cc': '{/* | */}'
-\    }
-\  },
-\  'javascript' : {
-\    'snippets': {
-\      'cl': 'console.log({ | });',
-\      'cd': 'console.dir( | );',
-\      'ci': 'console.info( | );',
-\      'cde': 'console.debug( | )'
-\    }
-\  }
-\}
+" let g:user_emmet_expandabbr_key = '<C-e>'
+" let g:user_emmet_mode='i'
+" let g:user_emmet_settings = {
+" \  'racket' : {
+" \    'snippets': {
+" \      'def': '(define |)',
+" \      'l': ' λ',
+" \      'lamb': ' λ',
+" \      'lambda': ' λ'
+" \    }
+" \  },
+" \  'rust' : {
+" \    'snippets': {
+" \      'prin': 'println!("|");',
+" \      'println': 'println!("|");',
+" \      'println!': 'println!("|");',
+" \      'fn': 'fn |() { }',
+" \      'test': '#[test] fn test_sanity() { assert_eq!(12, 12); }',
+" \      'modtests': '#[cfg(test)] mod tests { use super::*;  #[test] fn test_sanity() { assert_eq!(12, 12); } }',
+" \    }
+" \  },
+" \  'php' : {
+" \    'snippets': {
+" \      'dd': 'dd( | );'
+" \    }
+" \  },
+" \  'typescriptreact' : {
+" \    'snippets': {
+" \      'cc': '{/* | */}'
+" \    }
+" \  },
+" \  'javascriptreact' : {
+" \    'snippets': {
+" \      'cc': '{/* | */}'
+" \    }
+" \  },
+" \  'javascript' : {
+" \    'snippets': {
+" \      'cl': 'console.log({ | });',
+" \      'cd': 'console.dir( | );',
+" \      'ci': 'console.info( | );',
+" \      'cde': 'console.debug( | )'
+" \    }
+" \  }
+" \}
 " }}
 
 silent! call repeat#set("zfi{")
