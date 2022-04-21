@@ -1,3 +1,5 @@
+require('plugins')
+
 local o = vim.opt
 local wo = vim.wo
 local bo = vim.bo
@@ -328,5 +330,3 @@ silent! call repeat#set("zfi{")
 silent! call repeat#set("zfib")
 silent! call repeat#set("zfip")
 ]]
-
-require('plugins')
