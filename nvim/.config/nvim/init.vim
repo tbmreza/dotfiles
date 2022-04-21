@@ -32,7 +32,7 @@ local map = vim.api.nvim_set_keymap
 -- Plugin: mundo
 vim.g.mundo_help = 1
 o.undofile = true
-o.undodir = '~/.vim/undo'
+o.undodir = os.getenv('HOME') .. '/.vim/undo'
 map('n', '<F5>', ':MundoToggle<cr>', { noremap = true })
 
 -- Plugin: vista
