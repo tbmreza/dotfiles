@@ -1,4 +1,4 @@
-require('plugins')
+require("plugins")
 
 local o = vim.opt
 local wo = vim.wo
@@ -10,156 +10,156 @@ wo.cursorline = true
 wo.wrap = false
 wo.nu = true
 wo.rnu = true
-o.mouse = 'nicr'
-o.clipboard = 'unnamedplus'
+o.mouse = "nicr"
+o.clipboard = "unnamedplus"
 o.ignorecase = true
 o.smartcase = true
-bo.formatoptions = 'jcql'
+bo.formatoptions = "jcql"
 o.list = true
-o.listchars = 'eol:¬,tab:▸\\'
+o.listchars = "eol:¬,tab:▸\\"
 
 local def = vim.api.nvim_create_user_command
-def('Vimrc'    , 'tabe $HOME/.dotfiles/nvim/.config/nvim/init.lua', { nargs = 0 })
-def('Up'       , 'cd ..', { nargs = 0 })
-def('Back'     , 'cd -', { nargs = 0 })
-def('Scroll'   , 'windo set scrollbind', { nargs = 0 })
-def('ScrollOff', 'windo set scrollbind!', { nargs = 0 })
+def("Vimrc", "tabe $HOME/.dotfiles/nvim/.config/nvim/init.lua", { nargs = 0 })
+def("Up", "cd ..", { nargs = 0 })
+def("Back", "cd -", { nargs = 0 })
+def("Scroll", "windo set scrollbind", { nargs = 0 })
+def("ScrollOff", "windo set scrollbind!", { nargs = 0 })
 
 -- remaps in separate file?
-vim.g.mapleader = ' '
+vim.g.mapleader = " "
 
 local map = vim.api.nvim_set_keymap
 
 -- Plugin: mundo
 vim.g.mundo_help = 1
 o.undofile = true
-o.undodir = os.getenv('HOME') .. '/.vim/undo'
-map('n', '<F5>', ':MundoToggle<cr>', { noremap = true })
+o.undodir = os.getenv("HOME") .. "/.vim/undo"
+map("n", "<F5>", ":MundoToggle<cr>", { noremap = true })
 
 -- Plugin: vista
-vim.g['vista#renderer#enable_icon'] = 0
-vim.cmd [[
+vim.g["vista#renderer#enable_icon"] = 0
+vim.cmd([[
   function! NearestMethodOrFunction() abort
     return get(b:, 'vista_nearest_method_or_function', '')
   endfunction
   autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
-]]
+]])
 
 -- Plugin: emmet
-vim.g.user_emmet_expandabbr_key = '<C-e>'
-vim.g.user_emmet_mode = 'i'
+vim.g.user_emmet_expandabbr_key = "<C-e>"
+vim.g.user_emmet_mode = "i"
 vim.g.user_emmet_settings = {
-  racket = {
-    snippets = {
-      def = '(define |)',
-      dis = '(displayln |)'
-    }
-  },
-  rust = {
-    snippets = {
-      prin = 'println!("|");',
-      fn = 'fn |() { }',
-      test = '#[test] fn test_sanity() { assert_eq!(12, 12); }',
-      modtests = '#[cfg(test)] mod tests { use super::*;  #[test] fn test_sanity() { assert_eq!(12, 12); } }'
-    }
-  },
-  php = {
-    snippets = {
-      dd = 'dd( | );'
-    }
-  },
-  javascript = {
-    snippets = {
-      cl = 'console.log({ | });'
-    }
-  }
+	racket = {
+		snippets = {
+			def = "(define |)",
+			dis = "(displayln |)",
+		},
+	},
+	rust = {
+		snippets = {
+			prin = 'println!("|");',
+			fn = "fn |() { }",
+			test = "#[test] fn test_sanity() { assert_eq!(12, 12); }",
+			modtests = "#[cfg(test)] mod tests { use super::*;  #[test] fn test_sanity() { assert_eq!(12, 12); } }",
+		},
+	},
+	php = {
+		snippets = {
+			dd = "dd( | );",
+		},
+	},
+	javascript = {
+		snippets = {
+			cl = "console.log({ | });",
+		},
+	},
 }
 
 -- Plugin: lightline
 o.showtabline = 2
 o.showmode = false
 vim.g.lightline = {
-  colorscheme = 'powerlineish',
-  my = {},  -- namespace for custom function
-  active = {
-    left = {{'mode', 'paste'}, {'gitbranch'}, {'readonly', 'absolutepath', 'modified'}, {'method'}},
-    right = {{'lineinfo'}, {'percent'}, {'filetype'}}
-  },
-  tabline = {
-    right = {{'cocstatus'}}
-  },
-  mode_map = {
-    n = 'NOR',
-    i = 'INS',
-    R = 'REP',
-    v = 'VIS',
-    V = 'V-L',
-    ['C-v>'] = 'V-B',
-    c = 'COM',
-    s = 'SEL',
-    S = 'S-L',
-    ['C-s>'] = 'S-B',
-    t = 'TER'
-  },
-  component_function = {
-    gitbranch = 'FugitiveHead',
-    cocstatus = 'coc#status',
-    method = 'NearestMethodOrFunction'
-  }
+	colorscheme = "powerlineish",
+	my = {}, -- namespace for custom function
+	active = {
+		left = { { "mode", "paste" }, { "gitbranch" }, { "readonly", "absolutepath", "modified" }, { "method" } },
+		right = { { "lineinfo" }, { "percent" }, { "filetype" } },
+	},
+	tabline = {
+		right = { { "cocstatus" } },
+	},
+	mode_map = {
+		n = "NOR",
+		i = "INS",
+		R = "REP",
+		v = "VIS",
+		V = "V-L",
+		["C-v>"] = "V-B",
+		c = "COM",
+		s = "SEL",
+		S = "S-L",
+		["C-s>"] = "S-B",
+		t = "TER",
+	},
+	component_function = {
+		gitbranch = "FugitiveHead",
+		cocstatus = "coc#status",
+		method = "NearestMethodOrFunction",
+	},
 }
 
 -- Closing pair
-map('i', '"', '""<left>', { noremap = true })
-map('i', '<', '<><left>', { noremap = true })
-map('i', '(', '()<left>', { noremap = true })
-map('i', '[', '[]<left>', { noremap = true })
-map('i', '{', '{}<left>', { noremap = true })
-map('i', '{<cr>', '{<CR>}<ESC>O', { noremap = true })
+map("i", '"', '""<left>', { noremap = true })
+map("i", "<", "<><left>", { noremap = true })
+map("i", "(", "()<left>", { noremap = true })
+map("i", "[", "[]<left>", { noremap = true })
+map("i", "{", "{}<left>", { noremap = true })
+map("i", "{<cr>", "{<CR>}<ESC>O", { noremap = true })
 
 -- Window
-map('n', 'ç', '<c-w>c', { noremap = true })
-map('n', 'ˇ', '<c-w><s-t>', { noremap = true })
-map('n', '≠', '<c-w>=', { noremap = true })
-map('n', '˙', '<c-w>h', { noremap = false })
-map('n', '∆', '<c-w>j', { noremap = false })
-map('n', '˚', '<c-w>k', { noremap = false })
-map('n', '¬', '<c-w>l', { noremap = false })
-map('n', '¯', '4<c-w><', { noremap = true })
-map('n', '˘', '4<c-w>>', { noremap = true })
-map('n', '±', '4<c-w>+', { noremap = true })
-map('n', '–', '4<c-w>-', { noremap = true })
+map("n", "ç", "<c-w>c", { noremap = true })
+map("n", "ˇ", "<c-w><s-t>", { noremap = true })
+map("n", "≠", "<c-w>=", { noremap = true })
+map("n", "˙", "<c-w>h", { noremap = false })
+map("n", "∆", "<c-w>j", { noremap = false })
+map("n", "˚", "<c-w>k", { noremap = false })
+map("n", "¬", "<c-w>l", { noremap = false })
+map("n", "¯", "4<c-w><", { noremap = true })
+map("n", "˘", "4<c-w>>", { noremap = true })
+map("n", "±", "4<c-w>+", { noremap = true })
+map("n", "–", "4<c-w>-", { noremap = true })
 
 vim.g.tmux_navigator_no_mappings = 1
-map('n', '˙', ':TmuxNavigateLeft<cr>', { noremap = true, silent = true })
-map('n', '∆', ':TmuxNavigateDown<cr>', { noremap = true, silent = true })
-map('n', '˚', ':TmuxNavigateUp<cr>', { noremap = true, silent = true })
-map('n', '¬', ':TmuxNavigateRight<cr>', { noremap = true, silent = true })
+map("n", "˙", ":TmuxNavigateLeft<cr>", { noremap = true, silent = true })
+map("n", "∆", ":TmuxNavigateDown<cr>", { noremap = true, silent = true })
+map("n", "˚", ":TmuxNavigateUp<cr>", { noremap = true, silent = true })
+map("n", "¬", ":TmuxNavigateRight<cr>", { noremap = true, silent = true })
 
 -- Day to day text editing
-map('v', '//', "y/\\V<C-R>=escape(@\",'/\\')<CR><CR>", { noremap = true })
-map('n', 'mm', 'yygccp', { noremap = false })
-map('v', 'm', 'ygvgcP', { noremap = false })
-map('n', 'Y', 'y$', { noremap = true })
-map('n', '<leader>e', ':e!<cr>', { noremap = true })
-map('n', '<leader>s', ':w<cr>', { noremap = true })
-map('n', '<leader>;', '<s-a>;<esc>', { noremap = true })
-map('n', '<leader>.', '<s-a>.<esc>', { noremap = true })
-map('n', '<leader>,', '<s-a>,<esc>', { noremap = true })
-map('n', '<leader>>', 'a=>', { noremap = true })
-map('n', '<leader>:', 'a->', { noremap = true })
-map('n', '<esc><esc>', ':nohlsearch<cr>', { noremap = true, silent = true })
+map("v", "//", "y/\\V<C-R>=escape(@\",'/\\')<CR><CR>", { noremap = true })
+map("n", "mm", "yygccp", { noremap = false })
+map("v", "m", "ygvgcP", { noremap = false })
+map("n", "Y", "y$", { noremap = true })
+map("n", "<leader>e", ":e!<cr>", { noremap = true })
+map("n", "<leader>s", ":w<cr>", { noremap = true })
+map("n", "<leader>;", "<s-a>;<esc>", { noremap = true })
+map("n", "<leader>.", "<s-a>.<esc>", { noremap = true })
+map("n", "<leader>,", "<s-a>,<esc>", { noremap = true })
+map("n", "<leader>>", "a=>", { noremap = true })
+map("n", "<leader>:", "a->", { noremap = true })
+map("n", "<esc><esc>", ":nohlsearch<cr>", { noremap = true, silent = true })
 
 -- Theme
-vim.cmd [[
+vim.cmd([[
   function! SetColorscheme()
     colorscheme melange
     hi! Normal guibg=NONE ctermbg=NONE " transparent window if terminal supports it
   endfunction
   autocmd vimenter * ++nested call SetColorscheme()
-]]
+]])
 
 -- TODO
-vim.cmd [[
+vim.cmd([[
 " Merge conflicts
 nmap <leader>gj :diffget //3<cr>
 nmap <leader>gf :diffget //2<cr>
@@ -329,4 +329,4 @@ let g:sqh_connections = {
 silent! call repeat#set("zfi{")
 silent! call repeat#set("zfib")
 silent! call repeat#set("zfip")
-]]
+]])
