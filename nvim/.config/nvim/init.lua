@@ -108,6 +108,28 @@ vim.g.lightline = {
 	},
 }
 
+-- Plugin: neoformat
+map("n", "<leader>f", ":Neoformat<cr>", { noremap = false })
+map("v", "<leader>f", ":Neoformat!<space>", { noremap = false })
+
+local prettier_default = {
+	exe = "prettier",
+	args = { "--write" },
+	replace = 1,
+}
+--    neoformat_javascript_{formatter}
+vim.g.neoformat_javascript_prettier = prettier_default
+vim.g.neoformat_json5_prettier = prettier_default
+vim.g.neoformat_racket_fmt = {
+	exe = "raco",
+	args = { "fmt", "-i" },
+	replace = 1,
+}
+--    neoformat_enabled_{filetype} = { "{formatter}" }
+vim.g.neoformat_enabled_javascript = { "prettier" }
+vim.g.neoformat_enabled_json5 = { "prettier" }
+vim.g.neoformat_enabled_racket = { "fmt" }
+
 -- Closing pair
 map("i", '"', '""<left>', { noremap = true })
 map("i", "<", "<><left>", { noremap = true })
@@ -240,30 +262,30 @@ autocmd BufRead,BufNewFile *.volt setfiletype html
 " syntax/synload.vim doesn't load?
 " au Syntax abs    runtime! syntax/abs.vim
 
-let g:neoformat_javascript_prettier = {
-            \ 'exe': 'prettier',
-            \ 'args': ['--write'],
-            \ 'replace': 1,
-            \ }
+"let g:neoformat_javascript_prettier = {
+"           \ 'exe': 'prettier',
+"           \ 'args': ['--write'],
+"           \ 'replace': 1,
+"           \ }
 
-let g:neoformat_json5_prettier = {
-            \ 'exe': 'prettier',
-            \ 'args': ['--write'],
-            \ 'replace': 1,
-            \ }
+"let g:neoformat_json5_prettier = {
+"           \ 'exe': 'prettier',
+"           \ 'args': ['--write'],
+"           \ 'replace': 1,
+"           \ }
 
-let g:neoformat_racket_fmt = {
-            \ 'exe': 'raco',
-            \ 'args': ['fmt', '-i'],
-            \ 'replace': 1,
-            \ }
+"let g:neoformat_racket_fmt = {
+"           \ 'exe': 'raco',
+"           \ 'args': ['fmt', '-i'],
+"           \ 'replace': 1,
+"           \ }
 
-let g:neoformat_enabled_javascript = ['prettier']
-let g:neoformat_enabled_json5 = ['prettier']
-let g:neoformat_enabled_racket = ['fmt']
+"let g:neoformat_enabled_javascript = ['prettier']
+"let g:neoformat_enabled_json5 = ['prettier']
+"let g:neoformat_enabled_racket = ['fmt']
 
-nmap <leader>f :Neoformat<cr>
-vmap <leader>f :Neoformat!<space>
+"nmap <leader>f :Neoformat<cr>
+"vmap <leader>f :Neoformat!<space>
 
 function! FiletypeCoq()
   nmap <leader>j :CoqNext<cr>
