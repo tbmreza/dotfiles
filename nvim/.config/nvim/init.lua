@@ -23,7 +23,7 @@ o.sidescroll = 1
 o.sidescrolloff = 10
 
 local def = vim.api.nvim_create_user_command
-def("Vimrc", "tabe $HOME/.dotfiles/nvim/.config/nvim/init.lua", { nargs = 0 })
+def("Vimrc", "tabe $HOME/dotfiles/nvim/.config/nvim/init.lua", { nargs = 0 })
 def("Up", "cd ..", { nargs = 0 })
 def("Back", "cd -", { nargs = 0 })
 def("Scroll", "windo set scrollbind", { nargs = 0 })
