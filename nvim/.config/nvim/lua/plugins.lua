@@ -45,6 +45,7 @@ Plug("yardnsm/vim-import-cost", { ["do"] = "npm install --production" })
 Plug("wesQ3/vim-windowswap")
 -- Languages support
 Plug("benknoble/vim-racket")
+Plug("iamcco/markdown-preview.nvim", { ["do"] = "cd app && yarn install" })
 Plug("joereynolds/SQHell.vim")
 Plug("pechorin/any-jump.vim")
 -- Plug 'non25/vim-svelte'
