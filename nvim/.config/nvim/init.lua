@@ -29,6 +29,7 @@ def("Back", "cd -", { nargs = 0 })
 def("Scroll", "windo set scrollbind", { nargs = 0 })
 def("ScrollOff", "windo set scrollbind!", { nargs = 0 })
 def("Pwd", 'let @+ = expand("%")', { nargs = 0 })
+def("Com", "Git log | Git commit", { nargs = 0 })
 
 -- remaps in separate file?
 vim.g.mapleader = " "
