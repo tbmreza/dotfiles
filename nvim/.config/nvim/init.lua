@@ -24,6 +24,7 @@ o.sidescrolloff = 10
 
 local def = vim.api.nvim_create_user_command
 def("Vimrc", "tabe $HOME/dotfiles/nvim/.config/nvim/init.lua", { nargs = 0 })
+def("PlugEdit", "vs $HOME/dotfiles/nvim/.config/nvim/lua/plugins.lua", { nargs = 0 })
 def("Up", "cd ..", { nargs = 0 })
 def("Back", "cd -", { nargs = 0 })
 def("Scroll", "windo set scrollbind", { nargs = 0 })
@@ -76,6 +77,10 @@ map("n", "]b", ":bnext<cr>", { noremap = false })
 -- Horizontal scrolling
 map("", "<C-ScrollWheelDown>", "10zl", { noremap = true, silent = true })
 map("", "<C-ScrollWheelUp>", "10zh", { noremap = true, silent = true })
+
+-- Plugin: context
+vim.g.context_enabled = 0
+vim.g.context_add_mappings = 0
 
 -- Plugin: mundo
 vim.g.mundo_help = 1
@@ -265,12 +270,14 @@ map("n", "˚", ":TmuxNavigateUp<cr>", { noremap = true, silent = true })
 map("n", "¬", ":TmuxNavigateRight<cr>", { noremap = true, silent = true })
 
 -- Day to day text editing
+map("c", "<c-e>", ".*", { noremap = true })
 map("v", "//", "y/\\V<C-R>=escape(@\",'/\\')<CR><CR>", { noremap = true })
 map("n", "mm", "yygccp", { noremap = false })
 map("v", "m", "ygvgcP", { noremap = false })
 map("n", "Y", "y$", { noremap = true })
 map("n", "<leader>e", ":e!<cr>", { noremap = true })
 map("n", "<leader>s", ":w<cr>", { noremap = true })
+map("n", "<leader>S", ":w<cr>", { noremap = true })
 map("n", "<leader>;", "<s-a>;<esc>", { noremap = true })
 map("n", "<leader>.", "<s-a>.<esc>", { noremap = true })
 map("n", "<leader>,", "<s-a>,<esc>", { noremap = true })

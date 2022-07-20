@@ -34,6 +34,8 @@ export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="$PATH:$HOME/.tmux/scripts"
 export PATH="$PATH:$HOME/.composer/vendor/bin"
 export PATH="$PATH:/Applications/Racket v8.4/bin"
+export DENO_INSTALL="/Users/reza.handzalah/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
 
 export HOMEBREW_GITHUB_API_TOKEN=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
 
