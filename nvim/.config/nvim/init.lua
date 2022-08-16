@@ -38,7 +38,7 @@ local map = vim.api.nvim_set_keymap
 
 map("t", "<f4>", "<c-\\><c-n>", { noremap = true })
 
--- Merge conflicts
+-- Merge conflicts by diffing vertically (dv)
 map("n", "<leader>gj", ":diffget //3<cr>", { noremap = false })
 map("n", "<leader>gf", ":diffget //2<cr>", { noremap = false })
 
@@ -48,6 +48,7 @@ map("n", "s<esc>", "<nop>", { noremap = true, silent = true })
 -- Must have typed this by mistake
 map("n", "ZZ", "<nop>", { noremap = true })
 map("n", "-", "<nop>", { noremap = true })
+map("i", "<c-v>", "<nop>", { noremap = true })
 
 -- Move lines
 map("n", "<c-j>", ":m .+1<CR>==", { noremap = true })
@@ -175,8 +176,14 @@ vim.cmd([[
 		nnoremap <leader>dd yeodd(<c-r>0);<esc>
 	endfunction
 
+	function! FiletypeElixir()
+		vnoremap <leader>dd yoIO.inspect(<c-r>0)<esc>
+		nnoremap <leader>dd yeoIO.inspect(<c-r>0)<esc>
+	endfunction
+
 	autocmd filetype coq call FiletypeCoq()
 	autocmd filetype php call FiletypePHP()
+	autocmd filetype elixir call FiletypeElixir()
 	autocmd BufRead,BufNewFile *.volt setfiletype html
 	autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
@@ -281,8 +288,7 @@ map("n", "<leader>S", ":w<cr>", { noremap = true })
 map("n", "<leader>;", "<s-a>;<esc>", { noremap = true })
 map("n", "<leader>.", "<s-a>.<esc>", { noremap = true })
 map("n", "<leader>,", "<s-a>,<esc>", { noremap = true })
-map("n", "<leader>>", "a=>", { noremap = true })
-map("n", "<leader>:", "a->", { noremap = true })
+map("n", "<leader><leader>", "<s-O>TODO <esc>:TComment<cr><s-A>", { noremap = true })
 map("n", "<esc><esc>", ":nohlsearch<cr>", { noremap = true, silent = true })
 
 -- netrw
