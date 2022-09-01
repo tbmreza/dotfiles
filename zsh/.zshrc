@@ -1,3 +1,5 @@
+alias aegis="cargo r --bin cli --"
+
 alias vpnstate="/opt/cisco/anyconnect/bin/vpn state"
 alias vpndisconnect="/opt/cisco/anyconnect/bin/vpn disconnect"
 alias vpnmbiz="printf '\n${VPNMBIZ}\n' | /opt/cisco/anyconnect/bin/vpn -s connect vpn-inter.mbizmarket.my.id"
@@ -14,7 +16,7 @@ alias ctn="cargo test -- --nocapture"
 
 alias firefox="/Applications/Firefox.app/Contents/MacOS/firefox"
 
-alias chromedriver="$HOME/work/drivers/chrome/current/chromedriver"
+# alias chromedriver="$HOME/work/drivers/chrome/current/chromedriver"
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 alias chrome-canary="/Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Google\ Chrome\ Canary"
 alias chromium="/Applications/Chromium.app/Contents/MacOS/Chromium"
@@ -26,7 +28,7 @@ alias npmrun="npm run"
 
 alias zshrc="vi ~/.zshrc"
 
-export PATH="$PATH:$HOME/work/v0.7.0/nvim-osx64/bin"
+# export PATH="$PATH:$HOME/work/v0.7.0/nvim-osx64/bin"
 export PATH="$PATH:$HOME/work/flutter/bin"
 export PATH="$PATH:$HOME/work/drivers"
 export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
@@ -34,6 +36,7 @@ export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="$PATH:$HOME/.tmux/scripts"
 export PATH="$PATH:$HOME/.composer/vendor/bin"
 export PATH="$PATH:/Applications/Racket v8.4/bin"
+export PATH="$HOME/.cargo/bin:$PATH"
 export DENO_INSTALL="/Users/reza.handzalah/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 

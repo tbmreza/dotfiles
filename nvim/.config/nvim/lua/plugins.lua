@@ -14,6 +14,7 @@ Plug("morhetz/gruvbox")
 Plug("rhysd/vim-color-spring-night")
 Plug("savq/melange")
 -- Plugins that use dedicated split/modal
+Plug("AndrewRadev/linediff.vim")
 Plug("junegunn/gv.vim") -- commit history
 Plug("junegunn/vim-peekaboo") -- peek registers
 Plug("nvim-treesitter/nvim-treesitter", { ["do"] = "TSUpdate" })
@@ -25,6 +26,9 @@ Plug("junegunn/fzf.vim")
 Plug("liuchengxu/vista.vim")
 Plug("simnalamburt/vim-mundo") -- undo history
 Plug("tpope/vim-fugitive")
+Plug("vim-denops/denops.vim")
+-- Plug("lambdalisue/gin.vim")  -- unusable wip
+Plug("lambdalisue/gina.vim")
 Plug("tpope/vim-vinegar")
 -- Plugins that don't
 Plug("APZelos/blamer.nvim")
@@ -35,6 +39,9 @@ Plug("christoomey/vim-tmux-navigator")
 Plug("luochen1990/rainbow")
 Plug("mattn/emmet-vim")
 Plug("neoclide/coc.nvim", { branch = "release" })
+-- Plug("nvim-treesitter/nvim-treesitter")
+-- Plug("nvim-treesitter/nvim-treesitter-context")
+Plug("wellle/context.vim")
 Plug("sbdchd/neoformat")
 -- Plug 'tbmreza/coc-jira-complete', {'branch': 'fix-deprecation-warning', 'do': 'yarn install --frozen-lockfile'}
 Plug("tbmreza/vim-context-commentstring")
@@ -58,4 +65,6 @@ Plug("yuezk/vim-js")
 Plug("gioele/vim-autoswap")
 Plug("tpope/vim-repeat")
 Plug("dbakker/vim-paragraph-motion")
+Plug("tbmreza/tethys", { branch = "nvim-plugin", rtp = "support/vim-tethys" })
+-- Plug("~/work/pltd-contrib/tethys/support/vim-tethys")
 vim.call("plug#end")

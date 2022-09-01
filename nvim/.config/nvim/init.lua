@@ -25,7 +25,7 @@ o.sidescrolloff = 10
 local def = vim.api.nvim_create_user_command
 def("Vimrc", "tabe $HOME/dotfiles/nvim/.config/nvim/init.lua", { nargs = 0 })
 def("PlugEdit", "vs $HOME/dotfiles/nvim/.config/nvim/lua/plugins.lua", { nargs = 0 })
-def("Up", "cd ..", { nargs = 0 })
+def("Up", "cd ..", { nargs = 0 })  -- repeating with @: or @@ doesn't print current dir
 def("Back", "cd -", { nargs = 0 })
 def("Scroll", "windo set scrollbind", { nargs = 0 })
 def("ScrollOff", "windo set scrollbind!", { nargs = 0 })
@@ -123,7 +123,7 @@ vim.g.user_emmet_settings = {
 	},
 	javascript = {
 		snippets = {
-			cl = "console.log({ | });",
+			cl = "console.log(|);",
 		},
 	},
 }
@@ -161,7 +161,10 @@ vim.g.lightline = {
 	},
 }
 
+-- TODO FiletypeJavaScript() or however lua does it
 vim.cmd([[
+	nnoremap <leader>dd yiwoconsole.log(<c-r>0);<esc>
+
 	syntax enable
 	filetype plugin indent on
 
