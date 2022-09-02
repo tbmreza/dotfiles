@@ -1,5 +1,6 @@
 require("plugins")
-require("tbmreza.rust")
+require("rh.rust")
+require("rh.telescope.setup")
 
 local o = vim.opt
 local wo = vim.wo
@@ -59,10 +60,6 @@ map("v", "<c-k>", ":m '<-2<CR>gv=gv", { noremap = true })
 -- IDE
 -- map("n", "<leader>x", ":sp<cr>:SQHExecuteFile<cr>", { noremap = true })
 map("n", "<leader>b", ":Vexplore<cr>", { noremap = true })
-map("n", "<leader>t", ":Telescope<space>", { noremap = true })
-map("n", "<c-p>", ":Files<cr>", { noremap = true, silent = true })
-map("n", "<c-f>", ":Rg<cr>", { noremap = true, silent = true })
-map("n", "<c-h>", ":History<cr>", { noremap = true, silent = true })
 -- Terminal command integration
 map("n", "<leader>g", ":Git<space>", { noremap = true })
 map("n", "<leader>c", ":Cargo<space>", { noremap = true })

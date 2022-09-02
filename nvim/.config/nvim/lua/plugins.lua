@@ -18,11 +18,10 @@ Plug("AndrewRadev/linediff.vim")
 Plug("junegunn/gv.vim") -- commit history
 Plug("junegunn/vim-peekaboo") -- peek registers
 Plug("nvim-treesitter/nvim-treesitter", { ["do"] = "TSUpdate" })
-Plug("nvim-lua/plenary.nvim")
-Plug("nvim-telescope/telescope.nvim")
+Plug("nvim-lua/plenary.nvim") -- telescope dependency
+Plug("nvim-telescope/telescope.nvim", { tag = "0.1.0" })
 Plug("nvim-telescope/telescope-fzf-native.nvim", { ["do"] = "make" })
-Plug("junegunn/fzf")
-Plug("junegunn/fzf.vim")
+Plug("nvim-telescope/telescope-live-grep-args.nvim")
 Plug("liuchengxu/vista.vim")
 Plug("simnalamburt/vim-mundo") -- undo history
 Plug("tpope/vim-fugitive")
@@ -39,11 +38,9 @@ Plug("christoomey/vim-tmux-navigator")
 Plug("luochen1990/rainbow")
 Plug("mattn/emmet-vim")
 Plug("neoclide/coc.nvim", { branch = "release" })
--- Plug("nvim-treesitter/nvim-treesitter")
 -- Plug("nvim-treesitter/nvim-treesitter-context")
 Plug("wellle/context.vim")
 Plug("sbdchd/neoformat")
--- Plug 'tbmreza/coc-jira-complete', {'branch': 'fix-deprecation-warning', 'do': 'yarn install --frozen-lockfile'}
 Plug("tbmreza/vim-context-commentstring")
 Plug("tbmreza/vim-sandwich")
 Plug("tomtom/tcomment_vim")
