@@ -6,8 +6,8 @@ Plug("nvim-lualine/lualine.nvim")
 Plug("itchyny/vim-gitbranch") -- lightline component
 Plug("josa42/vim-lightline-coc")
 Plug("tbmreza/lightline.vim")
-Plug("xolox/vim-colorscheme-switcher")
-Plug("xolox/vim-misc") -- xolox dependency. move to packer?
+-- Plug("xolox/vim-colorscheme-switcher")
+-- Plug("xolox/vim-misc") -- xolox dependency
 -- Switch using `:NextColorScheme`.
 Plug("arcticicestudio/nord-vim")
 Plug("morhetz/gruvbox")
@@ -29,7 +29,7 @@ Plug("liuchengxu/vista.vim")
 Plug("simnalamburt/vim-mundo") -- undo history
 Plug("tpope/vim-fugitive")
 -- Plug("lambdalisue/gin.vim")  -- unusable wip
-Plug("lambdalisue/gina.vim")
+-- Plug("lambdalisue/gina.vim")
 Plug("tpope/vim-vinegar")
 -- Plugins that don't
 Plug("APZelos/blamer.nvim")
@@ -56,7 +56,7 @@ Plug("iamcco/markdown-preview.nvim", { ["do"] = "cd app && yarn install" })
 -- Plug("joereynolds/SQHell.vim")
 Plug("pechorin/any-jump.vim")
 -- Plug 'non25/vim-svelte'
-Plug("leafOfTree/vim-svelte-plugin")
+-- Plug("leafOfTree/vim-svelte-plugin")
 Plug("rust-lang/rust.vim")
 Plug("sheerun/vim-polyglot")
 Plug("tbmreza/Coqtail")
