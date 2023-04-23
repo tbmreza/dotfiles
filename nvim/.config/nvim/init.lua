@@ -31,6 +31,7 @@ def("Scroll", "windo set scrollbind", { nargs = 0 })
 def("ScrollOff", "windo set scrollbind!", { nargs = 0 })
 def("PwdYank", 'let @+ = expand("%")', { nargs = 0 })
 def("Com", "Git log | Git commit", { nargs = 0 })
+def("PersonalCommit", 'Git commit --amend --author="Reza <rezahandzalah@gmail.com>"', { nargs = 0 })
 def("Cmd", "FlowLauncher", { nargs = 0 })
 
 -- remaps in separate file?
@@ -289,6 +290,7 @@ map("n", "<leader>S", ":w<cr>", { noremap = true })
 map("n", "<leader>;", "<s-a>;<esc>", { noremap = true })
 map("n", "<leader>.", "<s-a>.<esc>", { noremap = true })
 map("n", "<leader>,", "<s-a>,<esc>", { noremap = true })
+map("n", "<leader>?", "<s-a>?<esc>", { noremap = true })
 map("n", "<leader><leader>", "<s-O>PICKUP <esc>:TComment<cr><s-A>", { noremap = true })
 map("n", "<esc><esc>", ":nohlsearch<cr>", { noremap = true, silent = true })
 
