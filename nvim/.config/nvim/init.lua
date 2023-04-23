@@ -31,7 +31,8 @@ def("Scroll", "windo set scrollbind", { nargs = 0 })
 def("ScrollOff", "windo set scrollbind!", { nargs = 0 })
 def("PwdYank", 'let @+ = expand("%")', { nargs = 0 })
 def("Com", "Git log | Git commit", { nargs = 0 })
-def("PersonalCommit", 'Git commit --amend --author="Reza <rezahandzalah@gmail.com>"', { nargs = 0 })
+def("PersonalEmailCommitAmend", 'Git commit --amend --author="Reza <rezahandzalah@gmail.com>"', { nargs = 0 })
+def("PersonalRemoteRepoPush", 'Git push https://@github.com/tbmreza/<f-args>.git', { nargs = 1 })
 def("Cmd", "FlowLauncher", { nargs = 0 })
 
 -- remaps in separate file?
