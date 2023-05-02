@@ -1,3 +1,4 @@
+-- leader hs to ]s, because ]c
 require("plugins")
 require("rh.telescope.setup")
 
@@ -31,9 +32,14 @@ def("Scroll", "windo set scrollbind", { nargs = 0 })
 def("ScrollOff", "windo set scrollbind!", { nargs = 0 })
 def("PwdYank", 'let @+ = expand("%")', { nargs = 0 })
 def("Com", "Git log | Git commit", { nargs = 0 })
-def("PersonalEmailCommitAmend", 'Git commit --amend --author="Reza <rezahandzalah@gmail.com>"', { nargs = 0 })
+def("PersonalCom", 'Git log | Git commit --author="Reza <rezahandzalah@gmail.com>"', { nargs = 0 })
+-- testing workflow:
+-- def("PersonalEmailCommitAmend", 'Git commit --amend --author="Reza <rezahandzalah@gmail.com>"', { nargs = 0 })
 def("PersonalRemoteRepoPush", 'Git push https://@github.com/tbmreza/<f-args>.git', { nargs = 1 })
 def("Cmd", "FlowLauncher", { nargs = 0 })
+vim.cmd([[
+  command! OpenBrowserCurrent execute "OpenBrowser" "file:///" . expand('%:p:gs?\\?/?')
+]])
 
 -- remaps in separate file?
 vim.g.mapleader = " "
@@ -63,9 +69,18 @@ map("n", "<c-h>", ":ISwapWith<cr>", { noremap = true })
 -- IDE
 map("n", "<leader>b", ":Vexplore<cr>", { noremap = true })
 -- Terminal command integration
-map("n", "<leader>p", ":FlowLauncher<cr>", { noremap = true })
+map("n", "<leader>r", ":FlowLauncher<cr>", { noremap = true })
 map("n", "<leader>g", ":Git<space>", { noremap = true })
 map("n", "<leader>c", ":Cargo<space>", { noremap = true })
+
+map("n", "<leader>hh", ':lua require("harpoon.ui").toggle_quick_menu()<cr>', { noremap = true })
+map("n", "<leader>ha", ':lua require("harpoon.mark").add_file()<cr>', { noremap = true })
+map("n", "<leader>hn", ':lua require("harpoon.ui").nav_next()<cr>', { noremap = true })
+map("n", "<leader>hp", ':lua require("harpoon.ui").nav_prev()<cr>', { noremap = true })
+
+vim.cmd([[
+  autocmd FileType harpoon    nnoremap <buffer> <C-c> <cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>
+]])
 
 -- Cycle through tabs
 map("", "<tab>", "gt", { noremap = true })
@@ -220,7 +235,7 @@ vim.g.rainbow_active = 0
 
 -- Plugin: neoformat
 vim.g.neoformat_only_msg_on_error = 1
--- vim.g.neoformat_verbose = 1
+vim.g.neoformat_verbose = 0
 vim.g.neoformat_try_formatprg = 1
 map("n", "<leader>f", ":Neoformat<cr>", { noremap = false })
 map("v", "<leader>f", ":Neoformat!<space>", { noremap = false })

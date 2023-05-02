@@ -47,7 +47,7 @@ Plug("tbmreza/vim-context-commentstring")
 Plug("tbmreza/vim-sandwich")
 Plug("tomtom/tcomment_vim")
 Plug("tyru/open-browser.vim")
-Plug("yardnsm/vim-import-cost", { ["do"] = "npm install --production" })
+-- Plug("yardnsm/vim-import-cost", { ["do"] = "npm install --production" })
 Plug("wesQ3/vim-windowswap")
 -- Languages support
 Plug("elixir-editors/vim-elixir")
@@ -66,7 +66,7 @@ Plug("gioele/vim-autoswap")
 Plug("tpope/vim-repeat")
 Plug("dbakker/vim-paragraph-motion")
 -- Dev
-Plug("tbmreza/tethys", { branch = "nvim-plugin", rtp = "support/vim-tethys" })
+-- Plug("tbmreza/tethys", { branch = "nvim-plugin", rtp = "support/vim-tethys" })
 -- Plug("~/work/pltd-contrib/tethys/support/vim-tethys")
 vim.call("plug#end")
 
@@ -94,6 +94,11 @@ return require("packer").startup(function(use)
 		config = function()
 			require("telescope").load_extension("live_grep_args")
 		end,
+	})
+
+	use({
+		"ThePrimeagen/harpoon",
+		requires = { "nvim-lua/plenary.nvim" },
 	})
 
 	use("arjunmahishi/flow.nvim")
