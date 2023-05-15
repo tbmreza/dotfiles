@@ -35,7 +35,6 @@ Plug("tpope/vim-vinegar")
 Plug("APZelos/blamer.nvim")
 Plug("Shougo/context_filetype.vim")
 Plug("Yggdroot/indentLine")
-Plug("airblade/vim-gitgutter")
 Plug("christoomey/vim-tmux-navigator")
 Plug("luochen1990/rainbow")
 Plug("mattn/emmet-vim")
@@ -104,6 +103,8 @@ return require("packer").startup(function(use)
 	use("arjunmahishi/flow.nvim")
 
 	use("mizlan/iswap.nvim")
+
+	use("airblade/vim-gitgutter")
 
 	use({
 		"rest-nvim/rest.nvim",

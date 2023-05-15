@@ -1,4 +1,3 @@
--- leader hs to ]s, because ]c
 require("plugins")
 require("rh.telescope.setup")
 
@@ -77,6 +76,10 @@ map("n", "<leader>hh", ':lua require("harpoon.ui").toggle_quick_menu()<cr>', { n
 map("n", "<leader>ha", ':lua require("harpoon.mark").add_file()<cr>', { noremap = true })
 map("n", "<leader>hn", ':lua require("harpoon.ui").nav_next()<cr>', { noremap = true })
 map("n", "<leader>hp", ':lua require("harpoon.ui").nav_prev()<cr>', { noremap = true })
+
+-- gitgutter
+map("n", "]]", ":GitGutterStageHunk<cr>", { noremap = true })
+map("n", "]o", ":GitGutterPreviewHunk<cr>", { noremap = true })
 
 vim.cmd([[
   autocmd FileType harpoon    nnoremap <buffer> <C-c> <cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>
