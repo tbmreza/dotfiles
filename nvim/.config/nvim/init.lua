@@ -81,6 +81,12 @@ map("n", "<leader>hp", ':lua require("harpoon.ui").nav_prev()<cr>', { noremap = 
 map("n", "]]", ":GitGutterStageHunk<cr>", { noremap = true })
 map("n", "[[", ":GitGutterUndoHunk<cr>", { noremap = true })
 map("n", "]o", ":GitGutterPreviewHunk<cr>", { noremap = true })
+map("n", "<leader>hp", "<nop>", { noremap = true })
+
+-- mistype guards
+map("n", "<s-k>", "<nop>", { noremap = true })
+-- undo closed pane
+-- undo X on untracked files
 
 vim.cmd([[
   autocmd FileType harpoon    nnoremap <buffer> <C-c> <cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>
