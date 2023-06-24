@@ -6,6 +6,8 @@ local o = vim.opt
 local wo = vim.wo
 local bo = vim.bo
 
+is_wsl = vim.loop.os_uname().release:lower():find('wsl')
+
 o.hidden = true
 o.updatetime = 200
 wo.cursorline = true
@@ -14,6 +16,25 @@ wo.nu = true
 wo.rnu = true
 o.mouse = "nicr"
 o.clipboard = "unnamedplus"
+
+if is_wsl then
+-- See :h clipboard-wsl
+vim.cmd([[
+    let g:clipboard = {
+                \   'name': 'WslClipboard',
+                \   'copy': {
+                \      '+': '/mnt/c/Windows/system32/clip.exe',
+                \      '*': '/mnt/c/Windows/system32/clip.exe',
+                \    },
+                \   'paste': {
+                \      '+': '/mnt/c/Windows/System32/WindowsPowerShell/v1.0//powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+                \      '*': '/mnt/c/Windows/System32/WindowsPowerShell/v1.0//powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+                \   },
+                \   'cache_enabled': 0,
+                \ }
+]])
+end
+
 o.ignorecase = true
 o.smartcase = true
 bo.formatoptions = "jcql"
@@ -72,6 +93,8 @@ map("n", "<leader>b", ":Vexplore<cr>", { noremap = true })
 map("n", "<leader>r", ":FlowLauncher<cr>", { noremap = true })
 map("n", "<leader>g", ":Git<space>", { noremap = true })
 map("n", "<leader>c", ":Cargo<space>", { noremap = true })
+-- if cwd has Cargo.toml:
+map("n", "<leader>r", ":! cargo c", { noremap = true })
 
 map("n", "<leader>hh", ':lua require("harpoon.ui").toggle_quick_menu()<cr>', { noremap = true })
 map("n", "<leader>ha", ':lua require("harpoon.mark").add_file()<cr>', { noremap = true })
@@ -104,14 +127,23 @@ o.undofile = true
 o.undodir = os.getenv("HOME") .. "/.vim/undo"
 map("n", "<F5>", ":MundoToggle<cr>", { noremap = true })
 
--- Plugin: vista
-vim.g["vista#renderer#enable_icon"] = 0
-vim.cmd([[
-  function! NearestMethodOrFunction() abort
-    return get(b:, 'vista_nearest_method_or_function', '')
-  endfunction
-  autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
-]])
+-- -- Plugin: vista
+-- vim.g["vista#renderer#enable_icon"] = 0
+-- vim.cmd([[
+--   function! NearestMethodOrFunction() abort
+--     return get(b:, 'vista_nearest_method_or_function', '')
+--   endfunction
+--   autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+-- ]])
+
+-- gitgutter
+map("n", "]]", ":GitGutterStageHunk<cr>", { noremap = true })
+map("n", "[[", ":GitGutterUndoHunk<cr>", { noremap = true })
+map("n", "]o", ":GitGutterPreviewHunk<cr>", { noremap = true })
+map("n", "<leader>hp", "<nop>", { noremap = true })
+
+-- mistype guards
+map("n", "<s-k>", "<nop>", { noremap = true })
 
 -- Plugin: emmet
 vim.g.user_emmet_expandabbr_key = "<C-e>"
@@ -288,11 +320,23 @@ map("n", "˘", "4<c-w>>", { noremap = true })
 map("n", "±", "4<c-w>+", { noremap = true })
 map("n", "–", "4<c-w>-", { noremap = true })
 
+map("n", "<m-c>", "<c-w>c", { noremap = true })
+map("n", "<m-s-t>", "<c-w><s-t>", { noremap = true })
+map("n", "<m-h>", "<c-w>h", { noremap = false })
+map("n", "<m-j>", "<c-w>j", { noremap = false })
+map("n", "<m-k>", "<c-w>k", { noremap = false })
+map("n", "<m-l>", "<c-w>l", { noremap = false })
+
 vim.g.tmux_navigator_no_mappings = 1
 map("n", "˙", ":TmuxNavigateLeft<cr>", { noremap = true, silent = true })
 map("n", "∆", ":TmuxNavigateDown<cr>", { noremap = true, silent = true })
 map("n", "˚", ":TmuxNavigateUp<cr>", { noremap = true, silent = true })
 map("n", "¬", ":TmuxNavigateRight<cr>", { noremap = true, silent = true })
+
+map("n", "<M-h>", ":TmuxNavigateLeft<cr>", { noremap = true, silent = true })
+map("n", "<M-j>", ":TmuxNavigateDown<cr>", { noremap = true, silent = true })
+map("n", "<M-k>", ":TmuxNavigateUp<cr>", { noremap = true, silent = true })
+map("n", "<M-l>", ":TmuxNavigateRight<cr>", { noremap = true, silent = true })
 
 -- Day to day text editing
 map("c", "<c-e>", ".*", { noremap = true })
