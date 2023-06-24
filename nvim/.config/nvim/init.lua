@@ -1,4 +1,3 @@
--- leader hs to ]s, because ]c
 require("plugins")
 require("rh.telescope.setup")
 
@@ -69,8 +68,8 @@ local map = vim.api.nvim_set_keymap
 map("t", "<f4>", "<c-\\><c-n>", { noremap = true })
 
 -- Merge conflicts by diffing vertically (dv)
-map("n", "<leader>gj", ":diffget //3<cr>", { noremap = false })
-map("n", "<leader>gf", ":diffget //2<cr>", { noremap = false })
+map("n", "<leader>vj", ":diffget //3<cr>", { noremap = false })
+map("n", "<leader>vf", ":diffget //2<cr>", { noremap = false })
 
 -- Abort sandwich
 map("n", "s<esc>", "<nop>", { noremap = true, silent = true })
@@ -100,6 +99,17 @@ map("n", "<leader>hh", ':lua require("harpoon.ui").toggle_quick_menu()<cr>', { n
 map("n", "<leader>ha", ':lua require("harpoon.mark").add_file()<cr>', { noremap = true })
 map("n", "<leader>hn", ':lua require("harpoon.ui").nav_next()<cr>', { noremap = true })
 map("n", "<leader>hp", ':lua require("harpoon.ui").nav_prev()<cr>', { noremap = true })
+
+-- gitgutter
+map("n", "]]", ":GitGutterStageHunk<cr>", { noremap = true })
+map("n", "[[", ":GitGutterUndoHunk<cr>", { noremap = true })
+map("n", "]o", ":GitGutterPreviewHunk<cr>", { noremap = true })
+map("n", "<leader>hp", "<nop>", { noremap = true })
+
+-- mistype guards
+map("n", "<s-k>", "<nop>", { noremap = true })
+-- undo closed pane
+-- undo X on untracked files
 
 vim.cmd([[
   autocmd FileType harpoon    nnoremap <buffer> <C-c> <cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>
