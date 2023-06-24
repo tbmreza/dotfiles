@@ -21,7 +21,7 @@ Plug("nvim-lua/plenary.nvim") -- telescope dependency
 Plug("nvim-telescope/telescope-fzf-native.nvim", { ["do"] = "make" })
 -- frecency
 Plug("kkharji/sqlite.lua")
-Plug("nvim-telescope/telescope-frecency.nvim")
+-- Plug("nvim-telescope/telescope-frecency.nvim")
 Plug("liuchengxu/vista.vim")
 Plug("simnalamburt/vim-mundo") -- undo history
 Plug("tpope/vim-fugitive")

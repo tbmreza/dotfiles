@@ -94,7 +94,7 @@ map("n", "<leader>r", ":FlowLauncher<cr>", { noremap = true })
 map("n", "<leader>g", ":Git<space>", { noremap = true })
 map("n", "<leader>c", ":Cargo<space>", { noremap = true })
 -- if cwd has Cargo.toml:
-map("n", "<leader>r", ":! cargo c", { noremap = true })
+map("n", "<leader>r", ":! cargo c<cr>", { noremap = true })
 
 map("n", "<leader>hh", ':lua require("harpoon.ui").toggle_quick_menu()<cr>', { noremap = true })
 map("n", "<leader>ha", ':lua require("harpoon.mark").add_file()<cr>', { noremap = true })

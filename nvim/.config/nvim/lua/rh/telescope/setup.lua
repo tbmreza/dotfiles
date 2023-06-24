@@ -50,7 +50,7 @@ local my_opts = {
 require("telescope").setup(my_opts)
 -- c-f fuzzy by default?
 require("telescope").load_extension("fzf")
-require("telescope").load_extension("frecency")
+-- require("telescope").load_extension("frecency")
 
 -- remaps in separate file?
 vim.g.mapleader = " "
