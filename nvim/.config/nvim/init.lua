@@ -6,6 +6,8 @@ local o = vim.opt
 local wo = vim.wo
 local bo = vim.bo
 
+is_wsl = vim.loop.os_uname().release:lower():find('wsl')
+
 o.hidden = true
 o.updatetime = 200
 wo.cursorline = true
@@ -14,6 +16,25 @@ wo.nu = true
 wo.rnu = true
 o.mouse = "nicr"
 o.clipboard = "unnamedplus"
+
+if is_wsl then
+-- See :h clipboard-wsl
+vim.cmd([[
+    let g:clipboard = {
+                \   'name': 'WslClipboard',
+                \   'copy': {
+                \      '+': '/mnt/c/Windows/system32/clip.exe',
+                \      '*': '/mnt/c/Windows/system32/clip.exe',
+                \    },
+                \   'paste': {
+                \      '+': '/mnt/c/Windows/System32/WindowsPowerShell/v1.0//powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+                \      '*': '/mnt/c/Windows/System32/WindowsPowerShell/v1.0//powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+                \   },
+                \   'cache_enabled': 0,
+                \ }
+]])
+end
+
 o.ignorecase = true
 o.smartcase = true
 bo.formatoptions = "jcql"
@@ -26,12 +47,20 @@ o.sidescrolloff = 10
 local def = vim.api.nvim_create_user_command
 def("Vimrc", "tabe $HOME/dotfiles/nvim/.config/nvim/init.lua", { nargs = 0 })
 def("PlugEdit", "vs $HOME/dotfiles/nvim/.config/nvim/lua/plugins.lua", { nargs = 0 })
-def("Up", "cd ..", { nargs = 0 })  -- repeating with @: or @@ doesn't print current dir
+def("Up", "cd ..", { nargs = 0 })
 def("Back", "cd -", { nargs = 0 })
 def("Scroll", "windo set scrollbind", { nargs = 0 })
 def("ScrollOff", "windo set scrollbind!", { nargs = 0 })
 def("PwdYank", 'let @+ = expand("%")', { nargs = 0 })
 def("Com", "Git log | Git commit", { nargs = 0 })
+def("PersonalCom", 'Git log | Git commit --author="Reza <rezahandzalah@gmail.com>"', { nargs = 0 })
+-- testing workflow:
+-- def("PersonalEmailCommitAmend", 'Git commit --amend --author="Reza <rezahandzalah@gmail.com>"', { nargs = 0 })
+def("PersonalRemoteRepoPush", 'Git push https://@github.com/tbmreza/<f-args>.git', { nargs = 1 })
+def("Cmd", "FlowLauncher", { nargs = 0 })
+vim.cmd([[
+  command! OpenBrowserCurrent execute "OpenBrowser" "file:///" . expand('%:p:gs?\\?/?')
+]])
 
 -- remaps in separate file?
 vim.g.mapleader = " "
@@ -40,8 +69,8 @@ local map = vim.api.nvim_set_keymap
 map("t", "<f4>", "<c-\\><c-n>", { noremap = true })
 
 -- Merge conflicts by diffing vertically (dv)
-map("n", "<leader>gj", ":diffget //3<cr>", { noremap = false })
-map("n", "<leader>gf", ":diffget //2<cr>", { noremap = false })
+map("n", "<leader>vj", ":diffget //3<cr>", { noremap = false })
+map("n", "<leader>vf", ":diffget //2<cr>", { noremap = false })
 
 -- Abort sandwich
 map("n", "s<esc>", "<nop>", { noremap = true, silent = true })
@@ -51,18 +80,41 @@ map("n", "ZZ", "<nop>", { noremap = true })
 map("n", "-", "<nop>", { noremap = true })
 map("i", "<c-v>", "<nop>", { noremap = true })
 
--- Move lines
+-- Move lines, args
 map("n", "<c-j>", ":m .+1<CR>==", { noremap = true })
 map("n", "<c-k>", ":m .-2<CR>==", { noremap = true })
 map("v", "<c-j>", ":m '>+1<CR>gv=gv", { noremap = true })
 map("v", "<c-k>", ":m '<-2<CR>gv=gv", { noremap = true })
+map("n", "<c-h>", ":ISwapWith<cr>", { noremap = true })
 
 -- IDE
--- map("n", "<leader>x", ":sp<cr>:SQHExecuteFile<cr>", { noremap = true })
 map("n", "<leader>b", ":Vexplore<cr>", { noremap = true })
 -- Terminal command integration
+map("n", "<leader>r", ":FlowLauncher<cr>", { noremap = true })
 map("n", "<leader>g", ":Git<space>", { noremap = true })
 map("n", "<leader>c", ":Cargo<space>", { noremap = true })
+-- if cwd has Cargo.toml:
+map("n", "<leader>r", ":! cargo c", { noremap = true })
+
+map("n", "<leader>hh", ':lua require("harpoon.ui").toggle_quick_menu()<cr>', { noremap = true })
+map("n", "<leader>ha", ':lua require("harpoon.mark").add_file()<cr>', { noremap = true })
+map("n", "<leader>hn", ':lua require("harpoon.ui").nav_next()<cr>', { noremap = true })
+map("n", "<leader>hp", ':lua require("harpoon.ui").nav_prev()<cr>', { noremap = true })
+
+-- gitgutter
+map("n", "]]", ":GitGutterStageHunk<cr>", { noremap = true })
+map("n", "[[", ":GitGutterUndoHunk<cr>", { noremap = true })
+map("n", "]o", ":GitGutterPreviewHunk<cr>", { noremap = true })
+map("n", "<leader>hp", "<nop>", { noremap = true })
+
+-- mistype guards
+map("n", "<s-k>", "<nop>", { noremap = true })
+-- undo closed pane
+-- undo X on untracked files
+
+vim.cmd([[
+  autocmd FileType harpoon    nnoremap <buffer> <C-c> <cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>
+]])
 
 -- Cycle through tabs
 map("", "<tab>", "gt", { noremap = true })
@@ -86,14 +138,23 @@ o.undofile = true
 o.undodir = os.getenv("HOME") .. "/.vim/undo"
 map("n", "<F5>", ":MundoToggle<cr>", { noremap = true })
 
--- Plugin: vista
-vim.g["vista#renderer#enable_icon"] = 0
-vim.cmd([[
-  function! NearestMethodOrFunction() abort
-    return get(b:, 'vista_nearest_method_or_function', '')
-  endfunction
-  autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
-]])
+-- -- Plugin: vista
+-- vim.g["vista#renderer#enable_icon"] = 0
+-- vim.cmd([[
+--   function! NearestMethodOrFunction() abort
+--     return get(b:, 'vista_nearest_method_or_function', '')
+--   endfunction
+--   autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+-- ]])
+
+-- gitgutter
+map("n", "]]", ":GitGutterStageHunk<cr>", { noremap = true })
+map("n", "[[", ":GitGutterUndoHunk<cr>", { noremap = true })
+map("n", "]o", ":GitGutterPreviewHunk<cr>", { noremap = true })
+map("n", "<leader>hp", "<nop>", { noremap = true })
+
+-- mistype guards
+map("n", "<s-k>", "<nop>", { noremap = true })
 
 -- Plugin: emmet
 vim.g.user_emmet_expandabbr_key = "<C-e>"
@@ -158,7 +219,6 @@ vim.g.lightline = {
 	},
 }
 
--- TODO FiletypeJavaScript() or however lua does it
 vim.cmd([[
 	nnoremap <leader>dd yiwoconsole.log(<c-r>0);<esc>
 
@@ -217,6 +277,8 @@ vim.g.blamer_show_in_insert_modes = 0
 vim.g.rainbow_active = 0
 
 -- Plugin: neoformat
+vim.g.neoformat_only_msg_on_error = 1
+vim.g.neoformat_verbose = 0
 vim.g.neoformat_try_formatprg = 1
 map("n", "<leader>f", ":Neoformat<cr>", { noremap = false })
 map("v", "<leader>f", ":Neoformat!<space>", { noremap = false })
@@ -239,19 +301,18 @@ vim.g.neoformat_enabled_javascript = { "prettier" }
 vim.g.neoformat_enabled_json5 = { "prettier" }
 vim.g.neoformat_enabled_racket = { "fmt" }
 
--- Plugin: SQHell
-vim.g.sqh_provider = "sqlite"
-local default_db = {
-	database = "/Users/reza.handzalah/work/cmu-db-course/homework_sql/musicbrainz-cmudb2020.db",
-}
-vim.g.sqh_connections = {
-	-- conn_name = db,
-	default = default_db,
-}
+-- -- Plugin: SQHell
+-- vim.g.sqh_provider = "sqlite"
+-- local default_db = {
+-- 	database = "/Users/reza.handzalah/work/cmu-db-course/homework_sql/musicbrainz-cmudb2020.db",
+-- }
+-- vim.g.sqh_connections = {
+-- 	-- conn_name = db,
+-- 	default = default_db,
+-- }
 
 -- Closing pair
 map("i", '"', '""<left>', { noremap = true })
-map("i", "<", "<><left>", { noremap = true })
 map("i", "(", "()<left>", { noremap = true })
 map("i", "[", "[]<left>", { noremap = true })
 map("i", "{", "{}<left>", { noremap = true })
@@ -270,11 +331,23 @@ map("n", "˘", "4<c-w>>", { noremap = true })
 map("n", "±", "4<c-w>+", { noremap = true })
 map("n", "–", "4<c-w>-", { noremap = true })
 
+map("n", "<m-c>", "<c-w>c", { noremap = true })
+map("n", "<m-s-t>", "<c-w><s-t>", { noremap = true })
+map("n", "<m-h>", "<c-w>h", { noremap = false })
+map("n", "<m-j>", "<c-w>j", { noremap = false })
+map("n", "<m-k>", "<c-w>k", { noremap = false })
+map("n", "<m-l>", "<c-w>l", { noremap = false })
+
 vim.g.tmux_navigator_no_mappings = 1
 map("n", "˙", ":TmuxNavigateLeft<cr>", { noremap = true, silent = true })
 map("n", "∆", ":TmuxNavigateDown<cr>", { noremap = true, silent = true })
 map("n", "˚", ":TmuxNavigateUp<cr>", { noremap = true, silent = true })
 map("n", "¬", ":TmuxNavigateRight<cr>", { noremap = true, silent = true })
+
+map("n", "<M-h>", ":TmuxNavigateLeft<cr>", { noremap = true, silent = true })
+map("n", "<M-j>", ":TmuxNavigateDown<cr>", { noremap = true, silent = true })
+map("n", "<M-k>", ":TmuxNavigateUp<cr>", { noremap = true, silent = true })
+map("n", "<M-l>", ":TmuxNavigateRight<cr>", { noremap = true, silent = true })
 
 -- Day to day text editing
 map("c", "<c-e>", ".*", { noremap = true })
@@ -288,7 +361,8 @@ map("n", "<leader>S", ":w<cr>", { noremap = true })
 map("n", "<leader>;", "<s-a>;<esc>", { noremap = true })
 map("n", "<leader>.", "<s-a>.<esc>", { noremap = true })
 map("n", "<leader>,", "<s-a>,<esc>", { noremap = true })
-map("n", "<leader><leader>", "<s-O>TODO <esc>:TComment<cr><s-A>", { noremap = true })
+map("n", "<leader>?", "<s-a>?<esc>", { noremap = true })
+map("n", "<leader><leader>", "<s-O>PICKUP <esc>:TComment<cr><s-A>", { noremap = true })
 map("n", "<esc><esc>", ":nohlsearch<cr>", { noremap = true, silent = true })
 
 -- netrw

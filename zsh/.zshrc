@@ -29,8 +29,8 @@ alias npmrun="npm run"
 alias zshrc="vi ~/.zshrc"
 
 # export PATH="$PATH:$HOME/work/v0.7.0/nvim-osx64/bin"
-export PATH="$PATH:$HOME/work/flutter/bin"
-export PATH="$PATH:$HOME/work/drivers"
+# export PATH="$PATH:$HOME/work/flutter/bin"
+# export PATH="$PATH:$HOME/work/drivers"
 export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="$PATH:$HOME/.tmux/scripts"
@@ -39,8 +39,6 @@ export PATH="$PATH:/Applications/Racket v8.4/bin"
 export PATH="$HOME/.cargo/bin:$PATH"
 export DENO_INSTALL="/Users/reza.handzalah/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
-
-export HOMEBREW_GITHUB_API_TOKEN=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
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -114,8 +112,10 @@ ZSH_THEME="edit--robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+# plugins=(git zsh-autosuggestions zsh-syntax-highlighting timer)
+plugins=(git zsh-autosuggestions timer)
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+TIMER_THRESHOLD=2
 
 ZSH_DISABLE_COMPFIX="true"
 source $ZSH/oh-my-zsh.sh
@@ -146,6 +146,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# nvim user note: make aliases available to zsh without sourcing
+# .zshrc by declaring them in .zshenv
 
 # vi mode
 bindkey -v
@@ -191,3 +193,8 @@ eval "$(pyenv virtualenv-init -)"
 bindkey "^P" up-line-or-search
 bindkey "^N" down-line-or-search
 export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="/Users/reza.handzalah/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
