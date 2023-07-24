@@ -1,81 +1,14 @@
-local Plug = vim.fn["plug#"]
-
-vim.call("plug#begin", "~/.config/nvim/plugged")
--- Appearence
-Plug("nvim-lualine/lualine.nvim")
-Plug("itchyny/vim-gitbranch") -- lightline component
-Plug("josa42/vim-lightline-coc")
-Plug("tbmreza/lightline.vim")
--- Switch using `:NextColorScheme`.
-Plug("arcticicestudio/nord-vim")
-Plug("morhetz/gruvbox")
-Plug("rhysd/vim-color-spring-night")
-Plug("savq/melange")
--- Plugins that use dedicated split/modal
-Plug("AndrewRadev/linediff.vim")
-Plug("junegunn/gv.vim") -- commit history
-Plug("junegunn/vim-peekaboo") -- peek registers
-Plug("nvim-treesitter/nvim-treesitter", { ["do"] = "TSUpdate" })
-Plug("nvim-treesitter/nvim-treesitter-textobjects")
-Plug("nvim-lua/plenary.nvim") -- telescope dependency
-Plug("nvim-telescope/telescope-fzf-native.nvim", { ["do"] = "make" })
--- frecency
-Plug("kkharji/sqlite.lua")
--- Plug("nvim-telescope/telescope-frecency.nvim")
-Plug("liuchengxu/vista.vim")
-Plug("simnalamburt/vim-mundo") -- undo history
-Plug("tpope/vim-fugitive")
-Plug("tpope/vim-vinegar")
--- Plugins that don't
-Plug("APZelos/blamer.nvim")
-Plug("Shougo/context_filetype.vim")
-Plug("Yggdroot/indentLine")
-Plug("christoomey/vim-tmux-navigator")
-Plug("luochen1990/rainbow")
-Plug("mattn/emmet-vim")
-Plug("neoclide/coc.nvim", { branch = "release" })
--- Plug("nvim-treesitter/nvim-treesitter-context")
-Plug("wellle/context.vim")
-Plug("sbdchd/neoformat")
-Plug("tbmreza/vim-context-commentstring")
-Plug("tbmreza/vim-sandwich")
-Plug("tomtom/tcomment_vim")
-Plug("tyru/open-browser.vim")
-Plug("wesQ3/vim-windowswap")
--- Languages support
-Plug("elixir-editors/vim-elixir")
-Plug("benknoble/vim-racket")
-Plug("iamcco/markdown-preview.nvim", { ["do"] = "cd app && yarn install" })
--- Plug("joereynolds/SQHell.vim")
-Plug("pechorin/any-jump.vim")
--- Plug 'non25/vim-svelte'
--- Plug("leafOfTree/vim-svelte-plugin")
-Plug("rust-lang/rust.vim")
-Plug("sheerun/vim-polyglot")
-Plug("tbmreza/Coqtail")
-Plug("yuezk/vim-js")
--- Neovim 'bug' patches
-Plug("gioele/vim-autoswap")
-Plug("tpope/vim-repeat")
-Plug("dbakker/vim-paragraph-motion")
--- Dev
--- Plug("tbmreza/tethys", { branch = "nvim-plugin", rtp = "support/vim-tethys" })
--- Plug("~/work/pltd-contrib/tethys/support/vim-tethys")
-vim.call("plug#end")
-
 return require("packer").startup(function(use)
 	-- packer manages itself as a package.
 	-- ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 	use("wbthomason/packer.nvim")
 
-	use("tpope/vim-dadbod")
+	use({
+		"itchyny/vim-gitbranch",
+		requires = { "tbmreza/lightline.vim" },
+	})
 
-	-- adding telescope-live-grep-args:
-	-- use({
-	-- 	"nvim-telescope/telescope.nvim",
-	-- 	tag = "0.1.1",
-	-- 	requires = { { "nvim-lua/plenary.nvim" } },
-	-- })
+	use("tpope/vim-dadbod")
 
 	use({
 		"nvim-telescope/telescope.nvim",
@@ -94,9 +27,33 @@ return require("packer").startup(function(use)
 		requires = { "nvim-lua/plenary.nvim" },
 	})
 
-	use("arjunmahishi/flow.nvim")
+	use {
+		'nvim-treesitter/nvim-treesitter',
+		run = function()
+			local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+			ts_update()
+		end,
+	}
 
-	use("mizlan/iswap.nvim")
+	use({
+		"mizlan/iswap.nvim",
+		requires = { 'nvim-treesitter/nvim-treesitter' },
+	})
+	use("savq/melange")
+	use("tomtom/tcomment_vim")
+	use({
+		"aserowy/tmux.nvim",
+		config = function()
+			local config = require("tmux").setup()
+			config.navigation.enable_default_keybindings = false
+			return config
+		end
+	})
+	use("tbmreza/vim-sandwich")
+
+	use("~/gh/telescope-thesaurus.nvim")
+
+	use("tpope/vim-fugitive")
 
 	use("airblade/vim-gitgutter")
 
@@ -141,4 +98,11 @@ return require("packer").startup(function(use)
 			})
 		end,
 	})
+
+	-- 'bug' patches
+	use("dbakker/vim-paragraph-motion")
+
+	-- Dev
+	-- Plug("tbmreza/tethys", { branch = "nvim-plugin", rtp = "support/vim-tethys" })
+	-- Plug("~/work/pltd-contrib/tethys/support/vim-tethys")
 end)
