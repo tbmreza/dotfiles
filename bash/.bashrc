@@ -57,7 +57,9 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='\n \[\033[01;100m\]\w\[\033[00m\]\n$(__git_ps1) \$ '
+    blue=$(tput setaf 4)
+    reset=$(tput sgr0)
+    PS1='\n \[\033[01;100m\]\w\[\033[00m\]\n\[$blue\]$(__git_ps1)\[$reset\] \$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
