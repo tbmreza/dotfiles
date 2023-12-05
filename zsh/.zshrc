@@ -1,56 +1,14 @@
-alias aegis="cargo r --bin cli --"
-
-alias vpnstate="/opt/cisco/anyconnect/bin/vpn state"
-alias vpndisconnect="/opt/cisco/anyconnect/bin/vpn disconnect"
-alias vpnmbiz="printf '\n${VPNMBIZ}\n' | /opt/cisco/anyconnect/bin/vpn -s connect vpn-inter.mbizmarket.my.id"
-
-alias tmls="tmux ls"
-alias tmnew="tmuxnew"
-# alias tmattach="tmux attach -t"
-alias rack="racket"
-alias racoi="raco pkg install"
-alias nv="nvim"
-alias nvs="nvim -S"
-alias le="exa -a"
-alias ctn="cargo test -- --nocapture"
-
-alias firefox="/Applications/Firefox.app/Contents/MacOS/firefox"
-
-# alias chromedriver="$HOME/work/drivers/chrome/current/chromedriver"
-alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
-alias chrome-canary="/Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Google\ Chrome\ Canary"
-alias chromium="/Applications/Chromium.app/Contents/MacOS/Chromium"
-alias gitstatus="git status"
-alias gitpull="git pull"
-alias gitlog="git log"
-alias gitcommitm="git commit -m"
-alias npmrun="npm run"
-
-alias zshrc="vi ~/.zshrc"
-
-# export PATH="$PATH:$HOME/work/v0.7.0/nvim-osx64/bin"
-# export PATH="$PATH:$HOME/work/flutter/bin"
-# export PATH="$PATH:$HOME/work/drivers"
-export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-export PATH="$PATH:$HOME/.tmux/scripts"
-export PATH="$PATH:$HOME/.composer/vendor/bin"
-export PATH="$PATH:/Applications/Racket v8.4/bin"
-export PATH="$HOME/.cargo/bin:$PATH"
-export DENO_INSTALL="/Users/reza.handzalah/.deno"
-export PATH="$DENO_INSTALL/bin:$PATH"
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/reza.handzalah/.oh-my-zsh"
+export ZSH="$HOME/dotfiles/oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="edit--robbyrussell"
+ZSH_THEME="robbyrussell"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -65,14 +23,13 @@ ZSH_THEME="edit--robbyrussell"
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+# zstyle ':omz:update' frequency 13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
@@ -87,8 +44,9 @@ ZSH_THEME="edit--robbyrussell"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
-# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -112,12 +70,8 @@ ZSH_THEME="edit--robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-# plugins=(git zsh-autosuggestions zsh-syntax-highlighting timer)
-plugins=(git zsh-autosuggestions timer)
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-TIMER_THRESHOLD=2
+plugins=(git zsh-autosuggestions)
 
-ZSH_DISABLE_COMPFIX="true"
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -145,56 +99,3 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# nvim user note: make aliases available to zsh without sourcing
-# .zshrc by declaring them in .zshenv
-
-# vi mode
-bindkey -v
-export KEYTIMEOUT=1 
-
-# https://github.com/nvm-sh/nvm#deeper-shell-integration
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# place this after nvm initialization!
-autoload -U add-zsh-hook
-load-nvmrc() {
-  local node_version="$(nvm version)"
-  local nvmrc_path="$(nvm_find_nvmrc)"
-
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
-    fi
-  elif [ "$node_version" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
-
-export FZF_DEFAULT_COMMAND='rg --files --follow --no-ignore-vcs --hidden -g "!{node_modules/*,.git/*}"'
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# opam configuration
-test -r /Users/reza.handzalah/.opam/opam-init/init.zsh && . /Users/reza.handzalah/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-
-# python
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
-# after the plugins
-bindkey "^P" up-line-or-search
-bindkey "^N" down-line-or-search
-export PATH="/usr/local/opt/mysql-client/bin:$PATH"
-
-# pnpm
-export PNPM_HOME="/Users/reza.handzalah/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-# pnpm end
