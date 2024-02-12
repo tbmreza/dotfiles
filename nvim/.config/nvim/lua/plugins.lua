@@ -1,108 +1,96 @@
-return require("packer").startup(function(use)
-	-- packer manages itself as a package.
-	-- ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-	use("wbthomason/packer.nvim")
+require('lazy').setup({
+  {
+    'nvim-telescope/telescope.nvim', tag = '0.1.5'
+                                -- , branch = '0.1.x'  -- or branch
+                                   , dependencies = { 'nvim-lua/plenary.nvim' }
+  },
+  { 'numToStr/Comment.nvim', opts = {}, lazy = false, },
+  { 'dbakker/vim-paragraph-motion' },
+  { 'neovim/nvim-lspconfig' },
+  { 'lewis6991/gitsigns.nvim' },
+  { 'tpope/vim-fugitive' },
 
-	use({
-		"itchyny/vim-gitbranch",
-		requires = { "tbmreza/lightline.vim" },
-	})
+  { 'tbmreza/vim-sandwich' },  -- commit: bracket with spaces as default
+  { 'tbmreza/lightline.vim' },  -- commit: display parent in tab filename
+  -- { 'itchyny/lightline.vim' },
 
-	use("tpope/vim-dadbod")
+  -- colorschemes
+  { 'rebelot/kanagawa.nvim' },
+  { 'savq/melange-nvim' },
 
-	use({
-		"nvim-telescope/telescope.nvim",
-		tag = "0.1.1",
-		requires = {
-			{ "nvim-lua/plenary.nvim" },
-			{ "nvim-telescope/telescope-live-grep-args.nvim" },
-		},
-		config = function()
-			require("telescope").load_extension("live_grep_args")
-		end,
-	})
+  {
+    'hrsh7th/nvim-cmp',
+    -- load cmp on InsertEnter
+    event = 'InsertEnter',
+    -- these dependencies will only be loaded when cmp loads
+    -- dependencies are always lazy-loaded unless specified otherwise
+    dependencies = {
+      'L3MON4D3/LuaSnip',
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-buffer',
+      'saadparwaiz1/cmp_luasnip',
+    },
+  },
+})
 
-	use({
-		"ThePrimeagen/harpoon",
-		requires = { "nvim-lua/plenary.nvim" },
-	})
+-- nvim-cmp
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-	use {
-		'nvim-treesitter/nvim-treesitter',
-		run = function()
-			local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-			ts_update()
-		end,
-	}
+local lspconfig = require('lspconfig')
 
-	use({
-		"mizlan/iswap.nvim",
-		requires = { 'nvim-treesitter/nvim-treesitter' },
-	})
-	use("savq/melange")
-	use("tomtom/tcomment_vim")
-	use({
-		"aserowy/tmux.nvim",
-		config = function()
-			local config = require("tmux").setup()
-			config.navigation.enable_default_keybindings = false
-			return config
-		end
-	})
-	use("tbmreza/vim-sandwich")
+-- Server names at https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md;
+-- search for: require'lspconfig'.
+local servers = { 'ocamllsp', 'pyright', 'racket_langserver', 'clangd', 'rust_analyzer', 'tsserver' }
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup {
+    -- on_attach = my_custom_on_attach,
+    capabilities = capabilities,
+  }
+end
 
-	use("~/gh/telescope-thesaurus.nvim")
+-- luasnip setup
+local luasnip = require 'luasnip'
 
-	use("tpope/vim-fugitive")
-
-	use("airblade/vim-gitgutter")
-
-	use({
-		"rest-nvim/rest.nvim",
-		requires = { "nvim-lua/plenary.nvim" },
-		-- import just the function? move the whole packer statement?
-		config = function()
-			require("rest-nvim").setup({
-				-- Open request results in a horizontal split
-				result_split_horizontal = false,
-				-- Keep the http file buffer above|left when split horizontal|vertical
-				result_split_in_place = false,
-				-- Skip SSL verification, useful for unknown certificates
-				skip_ssl_verification = false,
-				-- Encode URL before making request
-				encode_url = true,
-				-- Highlight request on run
-				highlight = {
-					enabled = true,
-					timeout = 150,
-				},
-				result = {
-					-- toggle showing URL, HTTP info, headers at top the of result window
-					show_url = true,
-					show_http_info = true,
-					show_headers = true,
-					-- executables or functions for formatting response body [optional]
-					-- set them to false if you want to disable them
-					formatters = {
-						json = "jq",
-						html = function(body)
-							return vim.fn.system({ "tidy", "-i", "-q", "-" }, body)
-						end,
-					},
-				},
-				-- Jump to request line on run
-				jump_to_request = false,
-				env_file = ".env",
-				custom_dynamic_variables = {},
-				yank_dry_run = true,
-			})
-		end,
-	})
-
-	-- 'bug' patches
-	use("dbakker/vim-paragraph-motion")
-
-	-- Dev
-	-- Plug("tbmreza/tethys", { branch = "nvim-plugin", rtp = "support/vim-tethys" })
-	-- Plug("~/work/pltd-contrib/tethys/support/vim-tethys")
-end)
+-- nvim-cmp setup
+local cmp = require 'cmp'
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-u>'] = cmp.mapping.scroll_docs(-4), -- Up
+    ['<C-d>'] = cmp.mapping.scroll_docs(4), -- Down
+    -- C-b (back) C-f (forward) for snippet placeholder navigation.
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  }),
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+    { name = 'buffer' },
+  },
+}

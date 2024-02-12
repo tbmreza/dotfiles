@@ -1,3 +1,8 @@
+-- :h options
+vim.opt.shiftwidth=2 -- >> and << read this
+vim.opt.tabstop=2
+vim.opt.expandtab=true -- expand means 'do not use'
+
 local buffer = 0 -- current buffer
 local opts = { noremap = true, silent = true }
 
