@@ -1,20 +1,44 @@
--- ??
--- https://github.com/nvim-lualine/lualine.nvim
--- zsh path /home/tbmreza/.cabal/bin/agda-mode
+-- haskell lsp used imports, inline inferred types
+-- vis replace with spaces, map p to <c-v> in insert mode
+-- remember setfiletype, html tabsize
+-- search text in dir without opening nv
+-- windows app specific ahk keymaps: <c-n> to keydown
+-- <c-f> rg cli options; include hidden files like .gitlab-ci.yml  https://github.com/mangelozzi/rgflow.nvim#quickstart-guide-tldr
 -- cargo t, c. general lang-mode? t for tool
 --   <leader>tt run
 --   <leader>t? echoes something (MerlinTypeOfSel)
-
--- agda: comment,  use emacs
--- stack ghci template: doesn't care about exe, just reloading lib in repl  use emacs
+-- <c-f> and <c-p> on the fly switching
+-- https://github.com/nvim-lualine/lualine.nvim  fork
 -- tame fugitive X  use dedicated clients like gitbutler
--- undo X on untracked files  fugitive
--- buffer maps g; g. g,  done
--- conflict <c-k>, <leader>e  done
--- ocp-indent  no problem so far
+-- undo X on untracked files  gitbutler
+-- https://github.com/mhartington/formatter.nvim
+-- running text for clamped statusline texts
+-- buffer autoclose  https://github.com/axkirillov/hbac.nvim
+-- next unidirection in visual mode  plugin territory
 
+-- EXTERNAL
+-- agda: comment, zsh path /home/tbmreza/.cabal/bin/agda-mode  use emacs
+-- stack ghci template: doesn't care about exe, just reloading lib in repl  use emacs
+
+-- DONE
+-- buffer maps g; g. g,
+-- conflict <c-k>, <leader>e
+-- <c-p> telescope hidden files like .gitlab-ci.yml
+-- sensible <c-w>
+-- <leader>n?: no, nO, fy, fd
+-- toggle visible lsp
+-- n to always next, N always prev regardless # or *
+-- keyboard mash: no tags file  <c-]> nop
+
+-- HELP
 -- undo closed pane
--- :{vs,sp,tabe} +Nbuf
+--   :ls to get N and :{vs,sp,tabe} +Nbuf
+-- search hidden
+--   :Telescope find_files hidden=true no_ignore=true
+-- apply macro to all lines
+--   :%normal @i
+
+vim.opt.swapfile = false
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -194,6 +218,7 @@ o.sidescrolloff = 10
 
 local def = vim.api.nvim_create_user_command
 def("Vimrc", "tabe $HOME/dotfiles/nvim/.config/nvim/init.lua", { nargs = 0 })
+def("Notes", "tabe $HOME/notes", { nargs = 0 })  -- ??: stow private repo
 def("PlugEdit", "tabe $HOME/dotfiles/nvim/.config/nvim/lua/plugins.lua", { nargs = 0 })
 def("Up", "cd ..", { nargs = 0 })
 def("Back", "cd -", { nargs = 0 })
@@ -205,7 +230,7 @@ def("PersonalCom", 'Git log | Git commit --author="Reza <rezahandzalah@gmail.com
 -- testing workflow:
 -- def("PersonalEmailCommitAmend", 'Git commit --amend --author="Reza <rezahandzalah@gmail.com>"', { nargs = 0 })
 def("PersonalRemoteRepoPush", 'Git push https://@github.com/tbmreza/<f-args>.git', { nargs = 1 })
-def("Cmd", "FlowLauncher", { nargs = 0 })
+-- def("Cmd", "FlowLauncher", { nargs = 0 })
 vim.cmd([[
   command! OpenBrowserCurrent execute "OpenBrowser" "file:///" . expand('%:p:gs?\\?/?')
 ]])
@@ -224,6 +249,9 @@ vim.cmd([[
 map ghh /[^\x00-\x7F]<cr>
 map gh? /??<cr>
 ]])
+
+map("i", "<c-l>", "->", { noremap = true })  -- staging
+-- map("i", "<c-p>", "PICKUP", { noremap = true })
 
 -- :h emacs-keys
 map("c", "<c-a>", "<Home>", { noremap = true })
@@ -252,6 +280,8 @@ map("i", "<c-j>", "<nop>", { noremap = true })
 map("i", "<c-v>", "<nop>", { noremap = true })
 map("n", "<leader>a", "<nop>", { noremap = true })
 map("n", "<s-k>", "<nop>", { noremap = true })
+map("n", "<s-u>", "<nop>", { noremap = true })
+map("n", "<c-]>", ":echo 'Ctrl-]: unconfigured lsp definition'<cr>", { noremap = true })
 
 -- Move lines, args
 map("n", "<c-j>", ":m .+1<CR>==", { noremap = true })
@@ -262,17 +292,9 @@ map("n", "<c-h>", ":ISwapWith<cr>", { noremap = true })
 
 -- IDE
 map("n", "<leader>b", ":Vexplore<cr>", { noremap = true })
--- Terminal command integration
-map("n", "<leader>r", ":FlowLauncher<cr>", { noremap = true })
+map("n", "<leader>bv", ":Vexplore<cr>", { noremap = true })
+map("n", "<leader>bb", ":sp<cr>:cf<cr>", { noremap = true })
 map("n", "<leader>g", ":Git<space>", { noremap = true })
--- map("n", "<leader>c", ":Cargo<space>", { noremap = true })
--- if cwd has Cargo.toml:
-map("n", "<leader>r", ":! cargo c<cr>", { noremap = true })
-
-map("n", "<leader>hh", ':lua require("harpoon.ui").toggle_quick_menu()<cr>', { noremap = true })
-map("n", "<leader>ha", ':lua require("harpoon.mark").add_file()<cr>', { noremap = true })
-map("n", "<leader>hn", ':lua require("harpoon.ui").nav_next()<cr>', { noremap = true })
-map("n", "<leader>hp", ':lua require("harpoon.ui").nav_prev()<cr>', { noremap = true })
 
 -- gitgutter
 map("n", "]]", ":GitGutterStageHunk<cr>", { noremap = true })
@@ -296,6 +318,34 @@ map("n", "]b", ":bnext<cr>", { noremap = false })
 map("", "<C-ScrollWheelDown>", "10zl", { noremap = true, silent = true })
 map("", "<C-ScrollWheelUp>", "10zh", { noremap = true, silent = true })
 
+-- map("n", "p", "i", { noremap = true })  -- ??: nvim command paste, send ctrl+v key not visual select
+-- Insert actions done normally
+map("n", "<leader>no", "o<esc>", { noremap = true })
+map("n", "<leader>nO", "O<esc>", { noremap = true })
+map("n", "<leader>nc", "cc<esc>", { noremap = true })
+
+-- Toggles
+local toggle_lsp_b = true
+function toggle_lsp()
+  if toggle_lsp_b then
+    vim.diagnostic.disable()
+    toggle_lsp_b = false
+  else
+    vim.diagnostic.enable()
+    toggle_lsp_b = true
+  end
+end
+map("n", "<leader>xl", "<cmd>lua toggle_lsp()<cr>", { noremap = true })
+
+function toggle_wrap()
+  if vim.o.wrap then
+    vim.o.wrap = false
+  else
+    vim.o.wrap = true
+  end
+end
+map("n", "<leader>xw", "<cmd>lua toggle_wrap()<cr>", { noremap = true })
+
 -- Plugin: context
 vim.g.context_enabled = 0
 vim.g.context_add_mappings = 0
@@ -305,21 +355,6 @@ vim.g.mundo_help = 1
 o.undofile = true
 o.undodir = os.getenv("HOME") .. "/.vim/undo"
 map("n", "<F5>", ":MundoToggle<cr>", { noremap = true })
-
--- -- Plugin: vista
--- vim.g["vista#renderer#enable_icon"] = 0
--- vim.cmd([[
---   function! NearestMethodOrFunction() abort
---     return get(b:, 'vista_nearest_method_or_function', '')
---   endfunction
---   autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
--- ]])
-
--- -- gitgutter
--- map("n", "]]", ":GitGutterStageHunk<cr>", { noremap = true })
--- map("n", "[[", ":GitGutterUndoHunk<cr>", { noremap = true })
--- map("n", "]o", ":GitGutterPreviewHunk<cr>", { noremap = true })
--- map("n", "<leader>hp", "<nop>", { noremap = true })
 
 -- Plugin: emmet
 vim.g.user_emmet_expandabbr_key = "<C-e>"
@@ -351,10 +386,21 @@ vim.g.user_emmet_settings = {
 	},
 }
 
+-- https://github.com/nvim-lualine/lualine.nvim
+require('lualine').setup{
+	options = {
+		icons_enabled = false
+	},
+	sections = {
+		lualine_a = {'mode'},
+		lualine_x = {}
+	},
+}
+
 -- Plugin: lightline
 o.showtabline = 2
 o.showmode = false
-vim.g.lightline = {  -- ??
+vim.g.lightline = {
 	colorscheme = "powerlineish",
 	my = {}, -- namespace for custom function
 	active = {
@@ -384,52 +430,14 @@ vim.g.lightline = {  -- ??
 	},
 }
 
-vim.cmd([[
-	syntax enable
-	filetype plugin indent on
-
-	function! FiletypeCoq()
-		nmap <leader>j :CoqNext<cr>
-		nmap <leader>k :CoqUndo<cr>
-		nmap <leader>l :CoqToLine<cr>
-	endfunction
-
-	function! FiletypePHP()
-		vnoremap <leader>dd yodd(<c-r>0);<esc>
-		nnoremap <leader>dd yeodd(<c-r>0);<esc>
-	endfunction
-
-	function! FiletypeElixir()
-		vnoremap <leader>dd yoIO.inspect(<c-r>0)<esc>
-		nnoremap <leader>dd yeoIO.inspect(<c-r>0)<esc>
-	endfunction
-
-	autocmd filetype coq call FiletypeCoq()
-	autocmd filetype php call FiletypePHP()
-	autocmd filetype elixir call FiletypeElixir()
-	autocmd BufRead,BufNewFile *.volt setfiletype html
-	autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
-
-	silent! call repeat#set("zfi{")
-	silent! call repeat#set("zfib")
-	silent! call repeat#set("zfip")
-]])
-
 -- Plugin: indentLine
 vim.g.indentLine_char = "·"
 
--- Plugin: Coqtail
-vim.g.coqtail_noimap = 1
+-- staging -- Plugin: Coqtail
+-- vim.g.coqtail_noimap = 1
 
 -- Plugin: rust.vim
 vim.g.rustfmt_autosave = 0
-
--- -- Plugin: coc
--- map("n", "gd", "<Plug>(coc-definition)", { noremap = false })
--- map("n", "gy", "<Plug>(coc-type-definition)", { noremap = false })
--- map("n", "gi", "<Plug>(coc-implementation)", { noremap = false })
--- map("n", "gr", "<Plug>(coc-references)", { noremap = false })
--- map("n", "<f2>", "<Plug>(coc-rename)", { noremap = false })
 
 -- Plugin: blamer
 vim.g.blamer_enabled = 1
@@ -439,31 +447,9 @@ vim.g.blamer_show_in_insert_modes = 0
 -- Plugin: rainbow
 vim.g.rainbow_active = 0
 
--- Plugin: neoformat
-vim.g.neoformat_only_msg_on_error = 1
-vim.g.neoformat_verbose = 0
-vim.g.neoformat_try_formatprg = 1
--- map("n", "<leader>f", ":Neoformat<cr>", { noremap = false })
-map("n", "<leader>f", ":echo 'nop'<cr>", { noremap = false })
-map("v", "<leader>f", ":Neoformat!<space>", { noremap = false })
-
-local prettier_default = {
-	exe = "prettier",
-	args = { "--write" },
-	replace = 1,
-}
---    neoformat_javascript_{formatter}
-vim.g.neoformat_javascript_prettier = prettier_default
-vim.g.neoformat_json5_prettier = prettier_default
-vim.g.neoformat_racket_fmt = {
-	exe = "raco",
-	args = { "fmt", "-i" },
-	replace = 1,
-}
---    neoformat_enabled_{filetype} = { "{formatter}" }
-vim.g.neoformat_enabled_javascript = { "prettier" }
-vim.g.neoformat_enabled_json5 = { "prettier" }
-vim.g.neoformat_enabled_racket = { "fmt" }
+-- Decouple nN from #*: n always moves to next, N previous
+map("n", 'n', ":call search(\'\', \'W\')<CR>", { noremap = true })
+map("n", 'N', ":call search(\'\', \'bW\')<CR>", { noremap = true })
 
 -- Closing pair
 map("i", '"', '""<left>', { noremap = true })
@@ -494,6 +480,8 @@ map("n", "<leader>fe", ":e!<cr>", { noremap = true })
 map("n", "<leader>s", "<nop>", { noremap = true })
 map("n", "<leader>S", "<nop>", { noremap = true })
 map("n", "<leader>fs", ":w<cr>", { noremap = true })
+map("n", "<leader>fy", "Gygg<c-o><c-o>", { noremap = true })
+map("n", "<leader>fd", "Gdgg", { noremap = true })
 
 -- Buffer editing
 map("v", "//", "y/\\V<C-R>=escape(@\",'/\\')<CR><CR>", { noremap = true })
@@ -506,6 +494,7 @@ map("n", "g,", "<s-a>,<esc>", { noremap = true })
 map("n", "g?", "<s-a>?<esc>", { noremap = true })
 map("n", "gcp", "<s-O>PICKUP <esc>gcc<s-A>", { noremap = false })
 map("n", "gc?", "<s-A><space><space>??<esc>gciw2f?", { noremap = false })
+map("v", "<space>", ":echo", { noremap = false })  -- ??: nvim visual replace with spaces
 
 map("n", "<esc><esc>", ":nohlsearch<cr>", { noremap = true, silent = true })
 map("t", "<esc><esc>", "<C-\\><C-n>", { noremap = true, silent = true })
@@ -522,22 +511,15 @@ vim.g.vim_svelte_plugin_load_full_syntax = 1
 vim.g.vim_svelte_plugin_use_typescript = 1
 
 -- Theme
-vim.g.colorscheme_switcher_exclude_builtins = 1  -- ??
+vim.g.colorscheme_switcher_exclude_builtins = 1
 
--- ok:
--- local lspconfig = require('lspconfig')
--- lspconfig.pyright.setup {}
--- lspconfig.rust_analyzer.setup {}
+-- -- ocaml user-setup install
+-- vim.cmd([[
+-- set rtp^="/home/tbmreza/.opam/default/share/ocp-indent/vim"
 --
--- local servers = { 'pyright', 'racket_langserver', 'clangd', 'rust_analyzer', 'tsserver' }
-
--- ocaml user-setup install
-vim.cmd([[
-set rtp^="/home/tbmreza/.opam/default/share/ocp-indent/vim"
-
-let g:opamshare = substitute(system('opam var share'),'\n$','','''')
-execute "set rtp+=" . g:opamshare . "/merlin/vim"
-]])
+-- let g:opamshare = substitute(system('opam var share'),'\n$','','''')
+-- execute "set rtp+=" . g:opamshare . "/merlin/vim"
+-- ]])
 
 require('gitsigns').setup{
   on_attach = function(bufnr)
@@ -564,3 +546,19 @@ require('gitsigns').setup{
 
   end
 }
+
+-- require('rgflow').setup(
+--     {
+--         -- Set the default rip grep flags and options for when running a search via
+--         -- RgFlow. Once changed via the UI, the previous search flags are used for 
+--         -- each subsequent search (until Neovim restarts).
+--         cmd_flags = "--smart-case --fixed-strings --ignore --max-columns 200",
+--
+--         -- Mappings to trigger RgFlow functions
+--         default_trigger_mappings = true,
+--         -- These mappings are only active when the RgFlow UI (panel) is open
+--         default_ui_mappings = true,
+--         -- QuickFix window only mapping
+--         default_quickfix_mappings = true,
+--     }
+-- )

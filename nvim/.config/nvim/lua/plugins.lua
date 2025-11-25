@@ -1,4 +1,28 @@
 require('lazy').setup({
+	{
+		'Julian/lean.nvim',
+		event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
+
+		dependencies = {
+			'neovim/nvim-lspconfig',
+			'nvim-lua/plenary.nvim',
+
+			-- optional dependencies:
+
+			-- a completion engine
+			--    hrsh7th/nvim-cmp or Saghen/blink.cmp are popular choices
+
+			-- 'nvim-telescope/telescope.nvim', -- for 2 Lean-specific pickers
+			-- 'andymass/vim-matchup',          -- for enhanced % motion behavior
+			-- 'andrewradev/switch.vim',        -- for switch support
+			-- 'tomtom/tcomment_vim',           -- for commenting
+		},
+
+		---@type lean.Config
+		opts = { -- see below for full configuration options
+			mappings = true,
+		}
+	},
   {
     'nvim-telescope/telescope.nvim', tag = '0.1.5'
                                 -- , branch = '0.1.x'  -- or branch
@@ -9,9 +33,27 @@ require('lazy').setup({
   { 'neovim/nvim-lspconfig' },
   { 'lewis6991/gitsigns.nvim' },
   { 'tpope/vim-fugitive' },
+  { 'leafOfTree/vim-svelte-plugin' },
+  { 'rescript-lang/vim-rescript', ft="rescript" },
+  { 'chaoren/vim-wordmotion' },  -- multiple words: CamelCaseACRONYMWords_underscore1234
+  -- { 'mangelozzi/rgflow.nvim' },
+
+  {
+    'nvim-lualine/lualine.nvim',
+    -- dependencies = { 'nvim-tree/nvim-web-devicons' }
+  },
+
+  -- {
+  --   'mrcjkb/haskell-tools.nvim',
+  --   version = '^4', -- Recommended
+  --   lazy = false, -- This plugin is already lazy
+  -- },
+  { 'jecaro/ghcid-error-file.nvim' },
+  { 'luc-tielen/telescope_hoogle' },
 
   { 'tbmreza/vim-sandwich' },  -- commit: bracket with spaces as default
-  { 'tbmreza/lightline.vim' },  -- commit: display parent in tab filename
+  -- { 'https://gitlab.com/tbmreza/lightline.vim', branch = 'reza' },  -- commit: display parent in tab filename
+  -- { 'tbmreza/lightline.vim' },  -- commit: display parent in tab filename
   -- { 'itchyny/lightline.vim' },
 
   -- colorschemes
@@ -39,9 +81,13 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local lspconfig = require('lspconfig')
 
--- Server names at https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md;
+-- Server names at https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md;
 -- search for: require'lspconfig'.
-local servers = { 'ocamllsp', 'pyright', 'racket_langserver', 'clangd', 'rust_analyzer', 'tsserver' }
+local servers = {
+	'rescriptls', 'ocamllsp', 'pyright', 'racket_langserver', 'clangd', 'rust_analyzer', 'tsserver',
+	'svelte',
+  -- 'hls'
+}
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     -- on_attach = my_custom_on_attach,
