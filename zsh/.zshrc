@@ -1,6 +1,21 @@
-# If you come from bash you might have to change your $PATH.
+# https://github.com/ku1ik/stderred/
+export LD_PRELOAD="$HOME/bin/stderred/build/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
+
+# Pre-built binaries to PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/.cabal/bin:$HOME/bin:/usr/local/bin:$PATH
+# export PATH=$HOME/.cabal/bin:$HOME/bin:/usr/local/bin:$PATH
+# export PATH==$HOME/.local/bin/conan:$HOME/.cabal/bin:$HOME/bin:/usr/local/bin:$PATH
+export PATH=$PATH:$HOME/.local/bin
+# export PATH=$PATH:$HOME/.cabal/bin
+export PATH=$PATH:$HOME/.ghcup/bin
+export PATH=$PATH:$HOME/bin/bundletool/1.17.2
+export PATH=$PATH:$HOME/bin/sml/smlnj-110.99.8/bin
+export PATH=$PATH:$HOME/bin/sml/mlton-2024/bin
+
+# Or as aliases.
+alias go="~/bin/go/bin/go"
+alias z3="~/bin/z3/z3-4.13.3-x64-glibc-2.35/bin/z3"
+alias zig="~/bin/zig"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/dotfiles/oh-my-zsh"
@@ -101,7 +116,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias go="~/bin/go/bin/go"
 #
 [[ ! -r /home/tbmreza/.opam/opam-init/init.zsh ]] || source /home/tbmreza/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
@@ -112,3 +126,14 @@ export SDKMAN_DIR="$HOME/.sdkman"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/terraform terraform
+export PATH=$PATH:$HOME/.maestro/bin
+
+# bun completions
+[ -s "/home/tbmreza/.bun/_bun" ] && source "/home/tbmreza/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

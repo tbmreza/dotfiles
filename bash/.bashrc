@@ -116,3 +116,23 @@ fi
 . "$HOME/.cargo/env"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+LT_LLVM_INSTALL_DIR=/usr/lib/llvm-16/
+alias cmakellvm='cmake -DLT_LLVM_INSTALL_DIR=$LT_LLVM_INSTALL_DIR'
+alias cmakelsp='cmake -DLT_LLVM_INSTALL_DIR=$LT_LLVM_INSTALL_DIR -DCMAKE_EXPORT_COMPILE_COMMANDS=1'
+alias cmakedraft='cmake -DLT_LLVM_INSTALL_DIR=$LT_LLVM_INSTALL_DIR -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++'
+# Using clang and lld speeds up the build, we recommend adding:
+#  -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DLLVM_ENABLE_LLD=ON
+
+source ~/just.bash
+
+# Created by `pipx` on 2023-08-10 10:28:59
+export PATH="$PATH:/home/tbmreza/.local/bin"
+
+[ -f "/home/tbmreza/.ghcup/env" ] && source "/home/tbmreza/.ghcup/env" # ghcup-env
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+complete -C /usr/bin/terraform terraform
+export PATH=$PATH:$HOME/.maestro/bin
