@@ -86,7 +86,7 @@ local lspconfig = require('lspconfig')
 local servers = {
 	'rescriptls', 'ocamllsp', 'pyright', 'racket_langserver', 'clangd', 'rust_analyzer', 'tsserver',
 	'svelte',
-  -- 'hls'
+  -- 'hh200d'
 }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
