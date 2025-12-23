@@ -33,8 +33,8 @@ require('lazy').setup({
   { 'neovim/nvim-lspconfig' },
   { 'lewis6991/gitsigns.nvim' },
   { 'tpope/vim-fugitive' },
-  { 'leafOfTree/vim-svelte-plugin' },
-  { 'rescript-lang/vim-rescript', ft="rescript" },
+  -- { 'leafOfTree/vim-svelte-plugin' },
+  -- { 'rescript-lang/vim-rescript', ft="rescript" },
   { 'chaoren/vim-wordmotion' },  -- multiple words: CamelCaseACRONYMWords_underscore1234
   -- { 'mangelozzi/rgflow.nvim' },
 
@@ -49,7 +49,7 @@ require('lazy').setup({
   --   lazy = false, -- This plugin is already lazy
   -- },
   { 'jecaro/ghcid-error-file.nvim' },
-  { 'luc-tielen/telescope_hoogle' },
+  -- { 'luc-tielen/telescope_hoogle' },
 
   { 'tbmreza/vim-sandwich' },  -- commit: bracket with spaces as default
   -- { 'https://gitlab.com/tbmreza/lightline.vim', branch = 'reza' },  -- commit: display parent in tab filename
@@ -76,15 +76,21 @@ require('lazy').setup({
   },
 })
 
+-- numToStr/Comment.nvim
+local ft = require('Comment.ft')
+ft.set('hh200', '# %s')
+
 -- nvim-cmp
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local lspconfig = require('lspconfig')
+-- local lspconfig = vim.lsp.config  -- ??
 
 -- Server names at https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md;
 -- search for: require'lspconfig'.
 local servers = {
-	'rescriptls', 'ocamllsp', 'pyright', 'racket_langserver', 'clangd', 'rust_analyzer', 'tsserver',
+	'rescriptls', 'ocamllsp', 'pyright', 'racket_langserver', 'clangd', 'rust_analyzer',
+	-- 'tsserver',
 	'svelte',
   -- 'hh200d'
 }

@@ -55,7 +55,7 @@ local telescope = require('telescope')
 -- telescope.setup {
 --   -- opts...
 -- }
-telescope.load_extension('hoogle')
+-- telescope.load_extension('hoogle')
 
 local map = vim.api.nvim_set_keymap
 
