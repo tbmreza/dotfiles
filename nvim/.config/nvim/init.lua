@@ -250,8 +250,7 @@ map ghh /[^\x00-\x7F]<cr>
 map gh? /??<cr>
 ]])
 
-map("i", "<c-l>", "->", { noremap = true })  -- staging
--- map("i", "<c-p>", "PICKUP", { noremap = true })
+map("i", "<c-l>", "->", { noremap = true })
 
 -- :h emacs-keys
 map("c", "<c-a>", "<Home>", { noremap = true })
@@ -302,9 +301,10 @@ map("n", "[[", ":GitGutterUndoHunk<cr>", { noremap = true })
 map("n", "]o", ":GitGutterPreviewHunk<cr>", { noremap = true })
 map("n", "<leader>hp", "<nop>", { noremap = true })
 
-vim.cmd([[
-  autocmd FileType harpoon    nnoremap <buffer> <C-c> <cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>
-]])
+-- ??: stage disabling
+-- vim.cmd([[
+--   autocmd FileType harpoon    nnoremap <buffer> <C-c> <cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>
+-- ]])
 
 -- Cycle through tabs
 map("", "<tab>", "gt", { noremap = true })
@@ -433,9 +433,6 @@ vim.g.lightline = {
 -- Plugin: indentLine
 vim.g.indentLine_char = "·"
 
--- staging -- Plugin: Coqtail
--- vim.g.coqtail_noimap = 1
-
 -- Plugin: rust.vim
 vim.g.rustfmt_autosave = 0
 
@@ -513,14 +510,6 @@ vim.g.vim_svelte_plugin_use_typescript = 1
 -- Theme
 vim.g.colorscheme_switcher_exclude_builtins = 1
 
--- -- ocaml user-setup install
--- vim.cmd([[
--- set rtp^="/home/tbmreza/.opam/default/share/ocp-indent/vim"
---
--- let g:opamshare = substitute(system('opam var share'),'\n$','','''')
--- execute "set rtp+=" . g:opamshare . "/merlin/vim"
--- ]])
-
 require('gitsigns').setup{
   on_attach = function(bufnr)
     local gs = package.loaded.gitsigns
@@ -547,18 +536,35 @@ require('gitsigns').setup{
   end
 }
 
--- require('rgflow').setup(
---     {
---         -- Set the default rip grep flags and options for when running a search via
---         -- RgFlow. Once changed via the UI, the previous search flags are used for 
---         -- each subsequent search (until Neovim restarts).
---         cmd_flags = "--smart-case --fixed-strings --ignore --max-columns 200",
---
---         -- Mappings to trigger RgFlow functions
---         default_trigger_mappings = true,
---         -- These mappings are only active when the RgFlow UI (panel) is open
---         default_ui_mappings = true,
---         -- QuickFix window only mapping
---         default_quickfix_mappings = true,
---     }
--- )
+-----------------
+-- vim.lsp dev --
+-----------------
+
+vim.lsp.set_log_level("trace")
+
+-- vim.keymap.set('n', '<leader>tc', function()
+--     vim.lsp.for_each_buffer_client(0, function(client)
+--         client.notify('workspace/didChangeConfiguration', {
+--             settings = { testValue = "ping" }
+--         })
+--     end)
+-- end, { desc = "Test LSP Config Change" })
+
+vim.keymap.set('n', '<leader>tc', function()
+    -- Filter for your specific server name
+    local clients = vim.lsp.get_clients({ bufnr = 0, name = "hh200d" })
+    if #clients == 0 then
+        vim.notify("No matching LSP client found", vim.log.levels.WARN)
+        return
+    end
+    for _, client in ipairs(clients) do
+        client.notify('workspace/didChangeConfiguration', {
+            settings = {
+                -- This is the table that maps to your Haskell 'Config' data type
+                exampleOption = "new_value",
+                debugMode = true,
+            }
+        })
+        vim.notify("LSP Config update sent to: " .. client.name)
+    end
+end, { desc = "LSP: Trigger Config Change" })
