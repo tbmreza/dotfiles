@@ -62,6 +62,7 @@ vim.cmd.colorscheme 'melange'  -- melange kanagawa
 -- overriden by after/ftplugin
 vim.opt.shiftwidth=2 -- >> and << read this
 vim.opt.tabstop=2
+vim.opt.expandtab=true
 
 local o = vim.opt
 local wo = vim.wo
