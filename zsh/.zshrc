@@ -6,8 +6,8 @@ export LD_PRELOAD="$HOME/bin/stderred/build/libstderred.so${LD_PRELOAD:+:$LD_PRE
 # export PATH=$HOME/.cabal/bin:$HOME/bin:/usr/local/bin:$PATH
 # export PATH==$HOME/.local/bin/conan:$HOME/.cabal/bin:$HOME/bin:/usr/local/bin:$PATH
 export PATH=$PATH:$HOME/.local/bin
-# export PATH=$PATH:$HOME/.cabal/bin
 export PATH=$PATH:$HOME/.ghcup/bin
+export PATH=$PATH:$HOME/bin/llvm-15.0.0/bin
 export PATH=$PATH:$HOME/bin/bundletool/1.17.2
 export PATH=$PATH:$HOME/bin/sml/smlnj-110.99.8/bin
 export PATH=$PATH:$HOME/bin/sml/mlton-2024/bin
